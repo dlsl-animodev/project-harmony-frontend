@@ -3,9 +3,10 @@ import AttendanceTableServer from "@/components/attendance-table/attendance-tabl
 import Loader from "@/components/loader";
 
 interface SingleDayPageProps {
-    params: { dayId: string };
+    // When a page component is async, Next.js may provide params as a thenable.
+    params: Promise<{ dayId: string }>;
 }
-const SingleDayPage: React.FC<SingleDayPageProps> = async ({ params }) => {
+const SingleDayPage = async ({ params }: SingleDayPageProps) => {
     const dayId = (await params).dayId;
 
     return (
