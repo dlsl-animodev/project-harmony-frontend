@@ -72,7 +72,7 @@ jobs:
         # Collect build outputs (and essential files) into a single .dist tarball.
         # --ignore-failed-read ensures missing optional files won't break the step.
         run: |
-          tar -czf project.dist --ignore-failed-read .next public package.json next.config.ts next-env.d.ts app
+          tar -czf project-harmony-frontend.dist --ignore-failed-read .next public package.json next.config.ts next-env.d.ts app
 
       - name: Upload distribution artifact
         uses: actions/upload-artifact@v4
