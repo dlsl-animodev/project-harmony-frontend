@@ -50,22 +50,19 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      # Step 5: Build Next.js project (This step now performs the static export via next.config.ts)
-      - name: Build and Export Static Site
+      # Step 5: Build Next.js project (generates optimized `.next` folder)
+      - name: Build Next.js project
         run: npm run build
-        # Requires 'output: "export"' in next.config.ts to output to 'out/'
+        
+      # Step 6: Package the full build output (optional but simplifies artifact handling)
+      - name: Package full build output
+        run: zip -r project-harmony-frontend-build.zip .next public package.json
+        # Includes .next (compiled output), public (assets), and package.json (context)
 
-      # Step 6: Package the static build output
-      # Files are in 'out/' from the build step (Step 5).
-      - name: Package static output
-        # Changed the artifact name to match the previous one you used for continuity
-        run: zip -r project-harmony-frontend-static.zip out
-
-      # Step 7: Upload the packaged artifact
-      - name: Upload static artifact
+      # Step 7: Upload the packaged artifact (renamed for clarity)
+      - name: Upload full build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: project-harmony-frontend-static
-          path: project-harmony-frontend-static.zip
-          # Path changed to the zip file, as uploading the raw 'out' folder is simpler
-          # but uploading a single zip file is what your original Step 9 achieved.
+          name: project-harmony-frontend-build
+          path: project-harmony-frontend-build.zip
+          # Path points to the single zip file
