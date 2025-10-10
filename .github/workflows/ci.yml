@@ -71,15 +71,17 @@ jobs:
         with:
           name: project-harmony-frontend-build
           path: |
-            # ---------------------------------------------
             # Compiled Output (Required to run the build)
-            # ---------------------------------------------
             .next/
             public/
+            app/
+            components/
+            pages/
+            context/
+            hooks/
+            lib/
             
-            # ---------------------------------------------
             # Runtime Configuration (Required by 'next start')
-            # ---------------------------------------------
             package.json
             package-lock.json
             next.config.ts
