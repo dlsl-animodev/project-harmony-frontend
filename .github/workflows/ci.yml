@@ -73,18 +73,39 @@ jobs:
       # This compiles and bundles your app for production.
       - name: Build Next.js project
         run: npm run build
+      # Step 8: Attempt to export static site for preview (non-fatal)
+      # `next export` produces a static `out/` directory when possible. We
+      # don't want the workflow to fail here: instead, create a fallback
+      # archive with the build artifacts so reviewers can still inspect
+      # the output.
+      - name: Export static site (non-fatal)
+        run: |
+          set -e
+          if npx next export; then
+            echo "next export succeeded"
+          else
+            echo "next export failed or not supported; continuing to create fallback artifact"
+          fi
 
-      # Step 8: Package the static build output
-      # Compresses the exported files inside the `out/` directory
-      # into a zip file for easy download
-      - name: Package static output
-        run: zip -r project-harmony-frontend-static.zip out
+      # Step 9: Package either the static export (out/) or fallback (.next + public)
+      - name: Package static or fallback output
+        run: |
+          if [ -d out ]; then
+            echo "Packaging static export (out/)"
+            zip -r project-harmony-frontend-static.zip out
+          else
+            echo "Static export not available; packaging fallback build outputs"
+            zip -r project-harmony-frontend-build.zip .next public package.json next.config.ts next-env.d.ts app || (
+              echo "zip failed; attempting tar.gz fallback" && tar -czf project-harmony-frontend-build.tar.gz .next public package.json next.config.ts next-env.d.ts app
+            )
+          fi
 
-      # Step 9: Upload the packaged artifact
-      # This makes the static site available under the GitHub Actions
-      # “Artifacts” tab for download and inspection.
-      - name: Upload static artifact
+      # Step 10: Upload whichever artifact exists
+      - name: Upload static or fallback artifact
         uses: actions/upload-artifact@v4
         with:
-          name: project-harmony-frontend-static
-          path: out
+          name: project-harmony-frontend-preview
+          path: |
+            project-harmony-frontend-static.zip
+            project-harmony-frontend-build.zip
+            project-harmony-frontend-build.tar.gz
