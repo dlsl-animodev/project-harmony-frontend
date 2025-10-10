@@ -1,111 +1,71 @@
-name: CI
+name: Next.js Build & Static Export
 
 on:
-  # Trigger workflow when:
-  # 1. A commit is pushed to the main branch
-  # 2. A pull request targets the main branch
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch: # Added for manual testing
 
 concurrency:
   # Prevent overlapping runs on the same branch.
-  # If a new push or PR update happens, cancel the previous one.
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
     name: Build, Lint, and Export Static Site
-    runs-on: ubuntu-latest  # Runs the job on a fresh Ubuntu environment
+    runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository so the workflow can access the code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js environment (Next.js requires Node)
-      - name: Use Node.js 18.x
+      # Step 1: Set up Node.js Environment with Built-in Caching
+      # This step replaces your old Step 2 and Step 3 (npm global cache).
+      - name: Use Node.js 18.x and Cache npm modules
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm' # Use built-in caching for global npm dependencies
 
-      # Step 3: Cache npm modules for faster builds
-      # This reuses installed dependencies between workflow runs
-      - name: Cache npm and node_modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm          # npm cache directory (stores downloaded packages)
-            node_modules    # local dependency folder
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      # Step 4: Cache Next.js build cache
-      # Next.js stores reusable build data in `.next/cache` for faster rebuilds
+      # Step 2: Cache Next.js build cache (Still necessary for speed)
       - name: Cache Next.js build cache
         uses: actions/cache@v4
         with:
-          path: .next/cache
-          key: ${{ runner.os }}-next-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
+          # Note: The 'out' folder is the static export, .next/cache is the build speedup cache.
+          path: |
+            .next/cache
+            node_modules # Add node_modules here for dependency reuse
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-next-
+            ${{ runner.os }}-node-
 
-      # Step 5: Install dependencies using npm
-      # - Uses `npm ci` if lockfile exists (clean, reproducible install)
-      # - Falls back to `npm install` otherwise
+      # Step 3: Install dependencies
+      # Simplified to npm ci, as this is best practice and ensures a clean build.
       - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
-          fi
+        run: npm ci
 
-      # Step 6: Run lint check
-      # Ensures code formatting and quality meet standards before building
+      # Step 4: Run lint check
       - name: Lint
         run: npm run lint
 
-      # Step 7: Build the Next.js project (generates optimized `.next` folder)
-      # This compiles and bundles your app for production.
-      - name: Build Next.js project
+      # Step 5: Build Next.js project (This step now performs the static export via next.config.ts)
+      - name: Build and Export Static Site
         run: npm run build
-      # Step 8: Attempt to export static site for preview (non-fatal)
-      # `next export` produces a static `out/` directory when possible. We
-      # don't want the workflow to fail here: instead, create a fallback
-      # archive with the build artifacts so reviewers can still inspect
-      # the output.
-      - name: Export static site (non-fatal)
-        run: |
-          set -e
-          if npx next export; then
-            echo "next export succeeded"
-          else
-            echo "next export failed or not supported; continuing to create fallback artifact"
-          fi
+        # Requires 'output: "export"' in next.config.ts to output to 'out/'
 
-      # Step 9: Package either the static export (out/) or fallback (.next + public)
-      - name: Package static or fallback output
-        run: |
-          if [ -d out ]; then
-            echo "Packaging static export (out/)"
-            zip -r project-harmony-frontend-static.zip out
-          else
-            echo "Static export not available; packaging fallback build outputs"
-            zip -r project-harmony-frontend-build.zip .next public package.json next.config.ts next-env.d.ts app || (
-              echo "zip failed; attempting tar.gz fallback" && tar -czf project-harmony-frontend-build.tar.gz .next public package.json next.config.ts next-env.d.ts app
-            )
-          fi
+      # Step 6: Package the static build output
+      # Files are in 'out/' from the build step (Step 5).
+      - name: Package static output
+        # Changed the artifact name to match the previous one you used for continuity
+        run: zip -r project-harmony-frontend-static.zip out
 
-      # Step 10: Upload whichever artifact exists
-      - name: Upload static or fallback artifact
+      # Step 7: Upload the packaged artifact
+      - name: Upload static artifact
         uses: actions/upload-artifact@v4
         with:
-          name: project-harmony-frontend-preview
-          path: |
-            project-harmony-frontend-static.zip
-            project-harmony-frontend-build.zip
-            project-harmony-frontend-build.tar.gz
+          name: project-harmony-frontend-static
+          path: project-harmony-frontend-static.zip
+          # Path changed to the zip file, as uploading the raw 'out' folder is simpler
+          # but uploading a single zip file is what your original Step 9 achieved.
