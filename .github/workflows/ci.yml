@@ -1,68 +1,89 @@
-name: Next.js Build & Static Export
+name: Next.js Build & Artifact Creation
 
+
+# 1. Workflow Triggers
 on:
   push:
-    branches: [ main ]
+    branches: [ main ]          # Trigger on push to the main branch
   pull_request:
-    branches: [ main ]
-  workflow_dispatch: # Added for manual testing
+    branches: [ main ]          # Trigger on PRs targeting the main branch
+  workflow_dispatch:            # Allows manual runs from the GitHub UI for testing or debugging
+
+# 2. Concurrency Management
+# Prevents multiple overlapping workflow runs for the same branch/PR,
+# ensuring only the latest commit is processed.
 
 concurrency:
-  # Prevent overlapping runs on the same branch.
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# 3. Jobs Definition
 jobs:
   build:
-    name: Build, Lint, and Export Static Site
-    runs-on: ubuntu-latest
+    name: Build, Lint, and Create Production Artifact
+    runs-on: ubuntu-latest # Executes the job on a fresh Linux virtual machine
 
     steps:
+      # Step 1: Checkout Code
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 # Action to clone the repository code
 
-      # Step 1: Set up Node.js Environment with Built-in Caching
-      # This step replaces your old Step 2 and Step 3 (npm global cache).
+      # Step 2: Set up Node.js Environment with Built-in Caching
+      # Uses Node.js 18 and leverages the 'npm' caching feature for global dependencies (~/.npm).
+      # This is the modern, simpler alternative to using actions/cache for the global npm directory.
       - name: Use Node.js 18.x and Cache npm modules
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'npm' # Use built-in caching for global npm dependencies
+          cache: 'npm' # Enables caching for the npm package manager
 
-      # Step 2: Cache Next.js build cache (Still necessary for speed)
-      - name: Cache Next.js build cache
+      # Step 3: Cache Local Dependencies and Next.js Build Data
+      # This is critical for speeding up subsequent runs by reusing node_modules and Next.js caches.
+      - name: Cache Next.js build cache and node_modules
         uses: actions/cache@v4
         with:
-          # Note: The 'out' folder is the static export, .next/cache is the build speedup cache.
           path: |
-            .next/cache
-            node_modules # Add node_modules here for dependency reuse
+            .next/cache      # Next.js specific cache files for build optimization
+            node_modules       # Local installed dependencies
+          # Key is based on OS and the hash of the package-lock.json for reliable cache invalidation
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Step 3: Install dependencies
-      # Simplified to npm ci, as this is best practice and ensures a clean build.
+      # Step 4: Install Dependencies
+      # 'npm ci' ensures a clean, fast, and reproducible installation based on the lock file.
       - name: Install dependencies
         run: npm ci
 
-      # Step 4: Run lint check
+      # Step 5: Run Code Quality Checks (Linting)
+      # Essential check to enforce coding standards before proceeding to the build.
       - name: Lint
         run: npm run lint
 
-      # Step 5: Build Next.js project (generates optimized `.next` folder)
+      # Step 6: Build Next.js project
+      # Creates the optimized, server-ready code in the `.next` directory.
       - name: Build Next.js project
         run: npm run build
-        
-      # Step 6: Package the full build output (optional but simplifies artifact handling)
-      - name: Package full build output
-        run: zip -r project-harmony-frontend-build.zip .next public package.json
-        # Includes .next (compiled output), public (assets), and package.json (context)
 
-      # Step 7: Upload the packaged artifact (renamed for clarity)
-      - name: Upload full build artifact
+      # Step 7: Upload Production-Ready Artifact
+      - name: Upload optimized runtime artifact
         uses: actions/upload-artifact@v4
         with:
           name: project-harmony-frontend-build
-          path: project-harmony-frontend-build.zip
-          # Path points to the single zip file
+          path: |
+            # ---------------------------------------------
+            # Compiled Output (Required to run the build)
+            # ---------------------------------------------
+            .next/
+            node_modules/
+            public/
+            
+            # ---------------------------------------------
+            # Runtime Configuration (Required by 'next start')
+            # ---------------------------------------------
+            package.json
+            package-lock.json
+            next.config.ts
+            # If you use environment variables at runtime, include the file:
+            # .env.production    
+            
