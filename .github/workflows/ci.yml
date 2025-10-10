@@ -74,19 +74,13 @@ jobs:
       - name: Build Next.js project
         run: npm run build
 
-      # Step 8: Export a static site version
-      # Converts the project into a purely static HTML/CSS/JS site
-      # that can run without Node.js (if supported by project structure)
-      - name: Export static site
-        run: npm run export
-
-      # Step 9: Package the static build output
+      # Step 8: Package the static build output
       # Compresses the exported files inside the `out/` directory
       # into a zip file for easy download
       - name: Package static output
         run: zip -r project-harmony-frontend-static.zip out
 
-      # Step 10: Upload the packaged artifact
+      # Step 9: Upload the packaged artifact
       # This makes the static site available under the GitHub Actions
       # “Artifacts” tab for download and inspection.
       - name: Upload static artifact
