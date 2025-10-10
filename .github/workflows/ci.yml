@@ -75,7 +75,6 @@ jobs:
             # Compiled Output (Required to run the build)
             # ---------------------------------------------
             .next/
-            node_modules/
             public/
             
             # ---------------------------------------------
