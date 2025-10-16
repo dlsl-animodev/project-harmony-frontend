@@ -1,208 +1,62 @@
-import BentoContainer from "../bento-container";
+import { ReportResponse } from "@/app/api/getReportByDate/route";
+import { BentoContainer } from "../bento-container";
 import { SubTitle, Description } from "../texts";
-import AttendanceTable, { Columns } from "./attendance-table";
+import AttendanceTable from "./attendance-table";
+import { fetchJSON } from "@/lib/utils";
+import DataLoadingFailed from "../data-loading-failed";
 
 interface AttendanceTableServerProps {
-    className? : string;
-      dayId: string | string[] | undefined;
-
+    className?: string;
+    date: string;
 }
-const AttendanceTableServer : React.FC<AttendanceTableServerProps> = async ({
-    dayId,
-    className
+const AttendanceTableServer: React.FC<AttendanceTableServerProps> = async ({
+    date,
+    className,
 }) => {
-     if (!dayId) {
-        // RENDER A NO DAY SELECTED MESSAGE
-        return (
-            <BentoContainer
-                className={`flex flex-col items-center justify-center ${className}`}
-            >
-                <SubTitle> No day chosen </SubTitle>
-                <Description>
-                    {" "}
-                    Select a day in the sidebar to show attendance{" "}
-                </Description>
-            </BentoContainer>
-        );
-    }
+    if (!date) return <NoDayChosen />;
 
-    // SIMULATE A SERVER FETCH
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const route = `${process.env.NEXT_PUBLIC_BASE_URL}/api/getReportByDate?date=${date}`;
+    const data = await fetchJSON<ReportResponse>(route);
 
-        const data: Columns[] = [
-        {
-            id: "1",
-            time_in: "2023-06-10T09:00:00",
-            name: "John Doe",
-            email: "john.doe@example.com",
-            time_out: "2023-06-10T17:00:00",
-            isMember: true,
-        },
-        {
-            id: "2",
-            time_in: "2023-06-10T09:15:00",
-            name: "Jane Smith",
-            email: "jane.smith@example.com",
-            time_out: "2023-06-10T17:30:00",
-            isMember: false,
-        },
-        {
-            id: "3",
-            time_in: "2023-06-10T08:45:00",
-            name: "Bob Johnson",
-            email: "bob.johnson@example.com",
-            time_out: "2023-06-10T16:45:00",
-            isMember: true,
-        },
-        {
-            id: "1",
-            time_in: "2023-06-10T09:00:00",
-            name: "John Doe",
-            email: "john.doe@example.com",
-            time_out: "2023-06-10T17:00:00",
-            isMember: true,
-        },
-        {
-            id: "2",
-            time_in: "2023-06-10T09:15:00",
-            name: "Jane Smith",
-            email: "jane.smith@example.com",
-            time_out: "2023-06-10T17:30:00",
-            isMember: false,
-        },
-        {
-            id: "3",
-            time_in: "2023-06-10T08:45:00",
-            name: "Bob Johnson",
-            email: "bob.johnson@example.com",
-            time_out: "2023-06-10T16:45:00",
-            isMember: true,
-        },
-        {
-            id: "1",
-            time_in: "2023-06-10T09:00:00",
-            name: "John Doe",
-            email: "john.doe@example.com",
-            time_out: "2023-06-10T17:00:00",
-            isMember: true,
-        },
-        {
-            id: "2",
-            time_in: "2023-06-10T09:15:00",
-            name: "Jane Smith",
-            email: "jane.smith@example.com",
-            time_out: "2023-06-10T17:30:00",
-            isMember: false,
-        },
-        {
-            id: "3",
-            time_in: "2023-06-10T08:45:00",
-            name: "Bob Johnson",
-            email: "bob.johnson@example.com",
-            time_out: "2023-06-10T16:45:00",
-            isMember: true,
-        },
-        {
-            id: "1",
-            time_in: "2023-06-10T09:00:00",
-            name: "John Doe",
-            email: "john.doe@example.com",
-            time_out: "2023-06-10T17:00:00",
-            isMember: true,
-        },
-        {
-            id: "2",
-            time_in: "2023-06-10T09:15:00",
-            name: "Jane Smith",
-            email: "jane.smith@example.com",
-            time_out: "2023-06-10T17:30:00",
-            isMember: false,
-        },
-        {
-            id: "3",
-            time_in: "2023-06-10T08:45:00",
-            name: "Bob Johnson",
-            email: "bob.johnson@example.com",
-            time_out: "2023-06-10T16:45:00",
-            isMember: true,
-        },
-        {
-            id: "1",
-            time_in: "2023-06-10T09:00:00",
-            name: "John Doe",
-            email: "john.doe@example.com",
-            time_out: "2023-06-10T17:00:00",
-            isMember: true,
-        },
-        {
-            id: "2",
-            time_in: "2023-06-10T09:15:00",
-            name: "Jane Smith",
-            email: "jane.smith@example.com",
-            time_out: "2023-06-10T17:30:00",
-            isMember: false,
-        },
-        {
-            id: "3",
-            time_in: "2023-06-10T08:45:00",
-            name: "Bob Johnson",
-            email: "bob.johnson@example.com",
-            time_out: "2023-06-10T16:45:00",
-            isMember: true,
-        },
-        {
-            id: "1",
-            time_in: "2023-06-10T09:00:00",
-            name: "John Doe",
-            email: "john.doe@example.com",
-            time_out: "2023-06-10T17:00:00",
-            isMember: true,
-        },
-        {
-            id: "2",
-            time_in: "2023-06-10T09:15:00",
-            name: "Jane Smith",
-            email: "jane.smith@example.com",
-            time_out: "2023-06-10T17:30:00",
-            isMember: false,
-        },
-        {
-            id: "3",
-            time_in: "2023-06-10T08:45:00",
-            name: "Bob Johnson",
-            email: "bob.johnson@example.com",
-            time_out: "2023-06-10T16:45:00",
-            isMember: true,
-        },
-        {
-            id: "1",
-            time_in: "2023-06-10T09:00:00",
-            name: "John Doe",
-            email: "john.doe@example.com",
-            time_out: "2023-06-10T17:00:00",
-            isMember: true,
-        },
-        {
-            id: "2",
-            time_in: "2023-06-10T09:15:00",
-            name: "Jane Smith",
-            email: "jane.smith@example.com",
-            time_out: "2023-06-10T17:30:00",
-            isMember: false,
-        },
-        {
-            id: "3",
-            time_in: "2023-06-10T08:45:00",
-            name: "Bob Johnson",
-            email: "bob.johnson@example.com",
-            time_out: "2023-06-10T16:45:00",
-            isMember: true,
-        },
-    ];
+    if (!data.success) return <DataLoadingFailed className={className} />
+
+    const formattedData =
+        data.data.data.map((item, index) => {
+            return {
+                id: index.toString(),
+                partner_id: item[4],
+                email_address: item[5],
+                department: item[6],
+                checkIn: item[10],
+                check_out: item[11],
+            };
+        }) || [];
 
     return (
-        <AttendanceTable className={className} dayId={dayId} data={data} />
-    )
+        <AttendanceTable
+            className={className}
+            date={date}
+            data={formattedData}
+        />
+    );
 };
 
 export default AttendanceTableServer;
+
+interface NoDayChosenProps {
+    className?: string;
+}
+
+const NoDayChosen: React.FC<NoDayChosenProps> = ({ className }) => {
+    return (
+        <BentoContainer
+            className={`flex flex-col items-center justify-center ${className}`}
+        >
+            <SubTitle> No day chosen </SubTitle>
+            <Description>
+                {" "}
+                Select a day in the sidebar to show attendance{" "}
+            </Description>
+        </BentoContainer>
+    );
+};

@@ -4,13 +4,13 @@ import Loader from "@/components/loader";
 
 interface SingleDayPageProps {
     // When a page component is async, Next.js may provide params as a thenable.
-    params: Promise<{ dayId: string }>;
+    params: Promise<{ date: string }>;
 }
 const SingleDayPage = async ({ params }: SingleDayPageProps) => {
-    const dayId = (await params).dayId;
+    const date = (await params).date;
 
     return (
-        <div className="flex gap-4 h-full w-full">
+        <div className="flex h-full w-full">
             <Suspense
                 fallback={
                     <Loader
@@ -20,7 +20,7 @@ const SingleDayPage = async ({ params }: SingleDayPageProps) => {
                     />
                 }
             >
-                <AttendanceTableServer className="w-full" dayId={dayId} />
+                <AttendanceTableServer className="w-full" date={date} />
             </Suspense>
         </div>
     );

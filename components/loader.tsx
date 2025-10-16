@@ -1,4 +1,4 @@
-import BentoContainer from "./bento-container";
+import {BentoContainer} from "./bento-container";
 import { Loader2 } from "lucide-react";
 
 import { SubTitle, Description } from "./texts";

@@ -1,25 +1,41 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { Button } from "../ui/button";
 import { Share } from "lucide-react";
 import { toast } from "sonner";
+import { DateType } from "@/lib/types";
 
-const ShareButton = () => {
+interface ShareButtonProps extends React.ComponentProps<typeof Button> {
+    fromHome? : boolean;
+    date? : DateType;
+}
+
+const ShareButton: React.FC<ShareButtonProps> = ( { fromHome, date, ...buttonProps }) => {
     const pathname = usePathname();
-    const searchParams = useSearchParams();
 
     const handleShareClick = () => {
+        if (fromHome && date) {
+            const shareUrl = `${
+                process.env.NEXT_PUBLIC_BASE_URL
+            }/day/${date.text}`;
+            
+            navigator.clipboard.writeText(shareUrl);
+            toast.success("Link copied to clipboard!");
+            return;
+        };
+
         const shareUrl = `${
-            process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
-        }${pathname}?${searchParams.toString()}`;
+            process.env.NEXT_PUBLIC_BASE_URL
+        }${pathname}`;
+        
         navigator.clipboard.writeText(shareUrl);
         toast.success("Link copied to clipboard!");
     };
 
     return (
-        <Button onClick={handleShareClick}>
+        <Button onClick={handleShareClick} {...buttonProps}>
             <Share /> Share
         </Button>
     );

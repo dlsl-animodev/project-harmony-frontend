@@ -19,6 +19,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
+import { ScrollArea } from "./scroll-area";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -50,14 +51,14 @@ export function DataTable<TData, TValue>({
         <div className={`overflow-hidden ${className}`}>
             <div className="flex items-center justify-between py-4">
                 <Input
-                    placeholder="Search by name..."
+                    placeholder="Search by email..."
                     value={
-                        (table.getColumn("name")?.getFilterValue() as string) ??
+                        (table.getColumn("email_address")?.getFilterValue() as string) ??
                         ""
                     }
                     onChange={(event) =>
                         table
-                            .getColumn("name")
+                            .getColumn("email_address")
                             ?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
@@ -65,7 +66,7 @@ export function DataTable<TData, TValue>({
 
                 {children}
             </div>
-            <div className="h-[calc(100vh-18.5rem)] overflow-auto">
+            <ScrollArea className="h-[calc(100vh-20rem)]" type="always">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -118,7 +119,7 @@ export function DataTable<TData, TValue>({
                         )}
                     </TableBody>
                 </Table>
-            </div>
+            </ScrollArea>
         </div>
     );
 }

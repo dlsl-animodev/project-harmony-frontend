@@ -1,22 +1,19 @@
 "use client";
 
 import { useLoading } from "@/context/loading-context";
+import { DateType } from "@/lib/types";
+import { formatDateForRender } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 
-export interface SidebarItem {
-    id: number;
-    text: string;
-}
-
 interface DaysSidebarItemProps {
-    day: SidebarItem;
+    date: DateType;
     className?: string;
 }
 const DaysSidebarItem: React.FC<DaysSidebarItemProps> = ({
-    day,
+    date,
     className,
 }) => {
     const { setIsLoading } = useLoading();
@@ -26,13 +23,13 @@ const DaysSidebarItem: React.FC<DaysSidebarItemProps> = ({
     const result = pathname.substring(lastSlashIndex + 1);
     const router = useRouter();
     const handleDayClick = async () => {
-        if (result === String(day.id)) {
+        if (result === String(date.id)) {
             toast.error("You are already viewing this day.");
             return;
         }
 
         setIsLoading(true);
-        router.push(`/day/${day.id}`);
+        router.push(`/day/${date.text}`);
     };
 
     return (
@@ -40,12 +37,12 @@ const DaysSidebarItem: React.FC<DaysSidebarItemProps> = ({
             className={twMerge(
                 "flex items-center gap-2",
                 className,
-                result === String(day.id) &&
+                result === String(date.id) &&
                     "text-primary font-bold bg-muted pl-4"
             )}
             onClick={handleDayClick}
         >
-            {day.text}
+            {formatDateForRender(date.text)}
             <ChevronRight className="ml-auto" size={20} />
         </li>
     );
