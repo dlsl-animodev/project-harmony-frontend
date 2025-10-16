@@ -1,3 +1,4 @@
+import React from "react";
 import { twMerge } from "tailwind-merge";
 
 interface BentoContainerProps {
@@ -20,4 +21,15 @@ const BentoContainer: React.FC<BentoContainerProps> = ({
     );
 };
 
-export default BentoContainer;
+const BentoContainerHeader : React.FC<BentoContainerProps> = ({
+    children,
+    className,
+}) => {
+    return (
+        <div className={className}>
+            {children}
+        </div>
+    )
+}
+
+export { BentoContainer, BentoContainerHeader };

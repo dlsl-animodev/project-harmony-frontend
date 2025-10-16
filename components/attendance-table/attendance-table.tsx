@@ -2,18 +2,19 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/data-table";
-import BentoContainer from "../bento-container";
+import { BentoContainer } from "../bento-container";
 import { Description, SubTitle } from "../texts";
 import React from "react";
 import ShareButton from "./share-button";
+import { formatDateForRender, formatTimeForRender } from "@/lib/utils";
 
 export interface Columns {
     id: string;
-    time_in: string;
-    name: string;
-    email: string;
-    time_out: string;
-    isMember: boolean;
+    partner_id: string | number;
+    email_address: string;
+    department: string;
+    checkIn: string;
+    check_out: string;
 }
 
 const columns: ColumnDef<Columns>[] = [
@@ -22,43 +23,47 @@ const columns: ColumnDef<Columns>[] = [
         header: "ID",
     },
     {
-        accessorKey: "time_in",
-        header: "Time In",
+        accessorKey: "partner_id",
+        header: "Partner ID",
     },
     {
-        accessorKey: "name",
-        header: "Name",
+        accessorKey: "email_address",
+        header: "Email Address",
     },
     {
-        accessorKey: "email",
-        header: "Email",
+        accessorKey: "department",
+        header: "Department",
     },
     {
-        accessorKey: "time_out",
-        header: "Time Out",
+        accessorKey: "checkIn",
+        header: "Check In",
+        cell: ({ row }) => formatTimeForRender(row.original.checkIn),
     },
     {
-        accessorKey: "isMember",
-        header: "Is Member",
-        cell: ({ row }) => (row.original.isMember ? "Yes" : "No"),
+        accessorKey: "check_out",
+        header: "Check Out",
+        cell: ({ row }) => formatTimeForRender(row.original.check_out),
     },
 ];
 
 interface AttendanceTableProps {
     className?: string;
-    dayId: string | string[] | undefined;
+    date: string;
     data: Columns[];
 }
 
 const AttendanceTable: React.FC<AttendanceTableProps> = ({
     className,
-    dayId,
+    date,
     data,
 }) => {
     return (
         <BentoContainer className={`${className} bg-background`}>
             <header className="border-b pb-2">
-                <SubTitle> Record for Day {dayId} </SubTitle>
+                <SubTitle>
+                    {" "}
+                    Record for day: {formatDateForRender(date)}{" "}
+                </SubTitle>
                 <Description>
                     {" "}
                     List of all the checkins and outs for the selected day{" "}
@@ -66,13 +71,11 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({
             </header>
 
             {/* 
-                THE CHILDREN OF THE DATA TABLE WILL BE THE BUTTONS IN THE RIGHT SIDE FOR ADDITIONAL CONTROLS  
+                THE CHILDREN OF THE DATA TABLE IS THE BUTTONS IN THE RIGHT SIDE FOR ADDITIONAL CONTROLS  
                 THE BUTTONS CAN NOT DIRECTLY INTERACT WITH THE DATATABLE BUT THROUGH THE DATA STATE PROPS
             */}
-            <DataTable className={className} data={data} columns={columns} >
-                <section className="flex gap-2">
-                    <ShareButton />
-                </section>
+            <DataTable className={className} data={data} columns={columns}>
+                <ShareButton />
             </DataTable>
         </BentoContainer>
     );

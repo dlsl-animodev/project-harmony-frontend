@@ -1,27 +1,28 @@
 "use client";
 
-import React, {  useMemo} from "react";
+import React, { useEffect } from "react";
 import { Description, SubTitle } from "../texts";
-import BentoContainer from "../bento-container";
+import {BentoContainer} from "../bento-container";
 import DaysSidebarItem from "./days-sidebar-item";
 import { Calendar } from "lucide-react";
+import { useDates } from "@/context/dates-context";
+import { ScrollArea } from "../ui/scroll-area";
+import { DateType } from "@/lib/types";
 
-interface RenderDaySidebarProps {
+interface DaysSidebarProps {
     className?: string;
-    dummy: {
-        id: number;
-        text: string;
-    }[];
+    formattedDates: DateType[];
 }
 
-const RenderDaySidebar: React.FC<RenderDaySidebarProps> = ({
+const DaysSidebar: React.FC<DaysSidebarProps> = ({
     className,
-    dummy,
+    formattedDates,
 }) => {
-    // IMITATE AN AWAIT WITH TIMEOUT FOR 5 SECONDS
+    const { dates, setDates } = useDates();
 
-    // DUMMY DATA TO RENDER THE DAYS
-    const days = useMemo(() => dummy, [dummy]);
+    useEffect(() => {
+        setDates(formattedDates);
+    }, [formattedDates, setDates]);
 
     return (
         <BentoContainer
@@ -42,23 +43,25 @@ const RenderDaySidebar: React.FC<RenderDaySidebarProps> = ({
 
             <main>
                 <nav>
-                    <ul className="text-sm overflow-y-auto h-[calc(100vh-17rem)] transition custom-scrollbar">
-                        {days.map((day) => (
-                            <DaysSidebarItem
-                                key={day.id}
-                                day={day}
-                                className="
+                    <ScrollArea className="h-[calc(100vh-16rem)] transition pr-2" type="always">
+                        <ul className="text-sm">
+                            {dates.map((date) => (
+                                <DaysSidebarItem
+                                    key={date.id}
+                                    date={date}
+                                    className="
                                         text-white font-medium p-2 rounded-md mr-2 my-1
                                         hover:bg-accent hover:text-muted-foreground hover:cursor-pointer hover:pl-4
                                         transition-all
                                     "
-                            />
-                        ))}
-                    </ul>
+                                />
+                            ))}
+                        </ul>
+                    </ScrollArea>
                 </nav>
             </main>
         </BentoContainer>
     );
 };
 
-export default RenderDaySidebar;
+export default DaysSidebar;

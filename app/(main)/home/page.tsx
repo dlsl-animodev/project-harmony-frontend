@@ -1,84 +1,62 @@
-import BentoContainer from "@/components/bento-container";
-import { Description, SubTitle, Title } from "@/components/texts";
-import { ChevronRight, UserCheck, UserX } from "lucide-react";
-import Link from "next/link";
+"use client";
 
-const HomePage = async () => {
-    const dummy = [
-        {
-            day: "Monday",
-            checkIns: 3,
-            checkouts: 2,
-        },
-        {
-            day: "Tuesday",
-            checkIns: 5,
-            checkouts: 4,
-        },
-        {
-            day: "Wednesday",
-            checkIns: 8,
-            checkouts: 7,
-        },
-        {
-            day: "Thursday",
-            checkIns: 4,
-            checkouts: 4,
-        },
-        {
-            day: "Friday",
-            checkIns: 7,
-            checkouts: 6,
-        },
-        {
-            day: "Saturday",
-            checkIns: 2,
-            checkouts: 1,
-        },
-        {
-            day: "Sunday",
-            checkIns: 1,
-            checkouts: 1,
-        },
-    ];
+import {
+    BentoContainer,
+    BentoContainerHeader,
+} from "@/components/bento-container";
+import { Description, Title } from "@/components/texts";
+import { useDates } from "@/context/dates-context";
+import { Terminal } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+    DayCards,
+    DayCardItem,
+    DayCardsContainer,
+} from "@/components/days/day-cards";
+import { groupDatesByMonth } from "@/lib/utils";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+const HomePage = () => {
+    const { dates } = useDates();
+    const groupedDates = groupDatesByMonth(dates);
 
     return (
-        <BentoContainer className="border-none space-y-8 bg-background">
-            <header>
-                <Title> Dashboard </Title>
-                <Description>
-                    Welcome to the Project Harmony Dashboard! Select a day to
-                    view detailed records.
-                </Description>
-            </header>
-            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {dummy.map((item, index) => (
-                    <li key={index}>
-                        <Link href="/day/1">
-                            <BentoContainer className="space-y-12 px-6 bg-gradient-to-tl from-[#f9f5ff] via-[#f0e7ff] to-[#e2d9ff] shadow-md transition">
-                                <header className="flex items-center justify-between ">
-                                    <SubTitle>{item.day} </SubTitle>
-                                    <ChevronRight className="text-[#f93ed4]" />
-                                </header>
-                                <main className="text-[#f93ed4] text-sm font-medium">
-                                    <div className="flex flex-col justify-center gap-2">
-                                        <div className="flex items-center gap-2">
-                                            <UserCheck
-                                                size={20}
-                                            /> Check-Ins: {item.checkIns}
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <UserX size={20} /> Checkouts:{" "}
-                                            {item.checkouts}
-                                        </div>
-                                    </div>
-                                </main>
-                            </BentoContainer>
-                        </Link>
-                    </li>
+        <ScrollArea
+            className="h-[calc(100vh-9rem)] overflow-auto pr-6"
+            type="always"
+        >
+            <BentoContainer className="border-none space-y-8 bg-background ">
+                <BentoContainerHeader>
+                    <Title> Dashboard </Title>
+                    <Description>
+                        Welcome to the Project Harmony Dashboard! Select a day
+                        to view detailed records.
+                    </Description>
+                </BentoContainerHeader>
+
+                <Alert className="bg-gradient-to-tl from-[#f9f5ff] via-[#f0e7ff] to-[#e2d9ff] shadow-md text-primary">
+                    <Terminal />
+                    <AlertTitle>
+                        If a date does not appear below, refresh the page or it
+                        means that there is no report for that day
+                    </AlertTitle>
+                    <AlertDescription>
+                        If you think it is an error, please contact the
+                        developers.
+                    </AlertDescription>
+                </Alert>
+
+                {Object.entries(groupedDates).map(([monthYear, days]) => (
+                    <DayCardsContainer key={monthYear} title={monthYear}>
+                        <DayCards>
+                            {days.map((item) => (
+                                <DayCardItem item={item} key={item.id} />
+                            ))}
+                        </DayCards>
+                    </DayCardsContainer>
                 ))}
-            </ul>
-        </BentoContainer>
+            </BentoContainer>
+        </ScrollArea>
     );
 };
 

@@ -1,4 +1,4 @@
-import BentoContainer from "@/components/bento-container";
+import {BentoContainer} from "@/components/bento-container";
 import Header from "@/components/header";
 import { Description, SubTitle } from "@/components/texts";
 import { Button } from "@/components/ui/button";
