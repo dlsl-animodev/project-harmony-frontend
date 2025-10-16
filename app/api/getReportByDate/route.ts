@@ -1,39 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-
-export interface AttendanceRow {
-    0: number | string;
-    1: string;
-    2: number | string;
-    3: number | string;
-    4: number | string;
-    5: string;
-    6: string;
-    7: string;
-    8: number | string;
-    9: string;
-    10: string;
-    11: string;
-}
-
-export interface AttendanceData {
-    status: string;
-    headers: string[];
-    sheetName: string;
-    totalRows: number;
-    data: AttendanceRow[];
-}
+import { getAttendanceByDate } from "@/lib/services/sheets-service";
+import { formatTimestamp } from "@/lib/utils/transformers";
+import { SheetsGetResponse } from "@/lib/types";
 
 export interface ReportResponse {
     success: boolean;
     message: string;
-    data: AttendanceData;
+    data: SheetsGetResponse;
     timestamp: string;
 }
 
 /*
     IN THIS GET FUNCTION:
     1. EXTRACT THE DATE PARAMETER FROM THE REQUEST URL
-    2. MAKE A FETCH REQUEST TO THE BACKEND SERVER TO GET THE REPORT FOR THE GIVEN DATE
+    2. MAKE A FETCH REQUEST TO THE BACKEND SERVER TOGET THE REPORT FOR THE GIVEN DATE
     3. RETURN THE REPORT AS A JSON RESPONSE
 */
 
@@ -51,26 +31,16 @@ export async function GET(
     }
 
     try {
-        const route = process.env.BACKEND_BASE_URL + `/api/reports/date/${date}`;
-        const response = await fetch(
-            route,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
 
-        if (!response.ok) {
-            return NextResponse.json(
-                { error: "Failed to fetch report" },
-                { status: 500 }
-            );
-        }
+        // use the local service instead of calling the deprecated backend
+        const data = await getAttendanceByDate(date);
 
-        const report: ReportResponse = await response.json();
-        return NextResponse.json(report);
+        return NextResponse.json({
+            success: true,
+            message: `Attendance for ${date} retrieved successfully`,
+            data: data,
+            timestamp: formatTimestamp(),
+        });
     } catch (error) {
         return NextResponse.json(
             { error: (error as Error).message },
