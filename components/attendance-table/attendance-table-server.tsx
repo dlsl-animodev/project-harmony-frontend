@@ -24,11 +24,11 @@ const AttendanceTableServer: React.FC<AttendanceTableServerProps> = async ({
         data.data.data.map((item, index) => {
             return {
                 id: index.toString(),
-                partner_id: item[4],
-                email_address: item[5],
-                department: item[6],
-                checkIn: item[10],
-                check_out: item[11],
+                partner_id: item[4] as string | number,
+                email_address: item[5] as string,
+                department: item[6] as string,
+                checkIn: item[10] as string,
+                check_out: item[11] as string,
             };
         }) || [];
 

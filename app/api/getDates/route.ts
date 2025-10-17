@@ -1,4 +1,9 @@
+// GET /api/getDates
+// get all available dates from google sheets
+
 import { NextResponse } from "next/server";
+import { getAvailableDates } from "@/lib/services/sheets-service";
+import { formatTimestamp } from "@/lib/utils/transformers";
 
 export interface GetDatesResponse {
     success: boolean;
@@ -11,26 +16,17 @@ export async function GET(): Promise<
     NextResponse<GetDatesResponse | { error: string }>
 > {
     try {
-        const route = process.env.BACKEND_BASE_URL + "/api/reports/dates";
-        const response = await fetch(
-            route,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
 
-        if (!response.ok) {
-            return NextResponse.json(
-                { error: "Failed to fetch dates" },
-                { status: 500 }
-            );
-        }
+        // use the local service instead of calling the deprecated backend
+        const response = await getAvailableDates();
 
-        const data = await response.json();
-        return NextResponse.json(data);
+        return NextResponse.json({
+            success: true,
+            message: response.message,
+            count: response.count,
+            dates: response.dates,
+            timestamp: formatTimestamp(),
+        });
     } catch (error) {
         return NextResponse.json(
             { error: (error as Error).message },
