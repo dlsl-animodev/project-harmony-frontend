@@ -18,14 +18,15 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ScrollArea } from "./scroll-area";
+import { Columns } from "../attendance-table/attendance-table";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
     className?: string;
-    children? : React.ReactNode;
+    children?: React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({
@@ -35,9 +36,21 @@ export function DataTable<TData, TValue>({
     children,
 }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [globalSearch, setGlobalSearch] = useState("");
+
+    // Filter data client-side: match email_address OR department
+    const filteredData = useMemo(() => {
+        const q = globalSearch.trim().toLowerCase();
+        if (!q) return data;
+        return data.filter((row) => {
+            const email = String((row as Columns).email_address ?? "").toLowerCase();
+            const dept = String((row as Columns).section ?? "").toLowerCase();
+            return email.includes(q) || dept.includes(q);
+        });
+    }, [data, globalSearch]);
 
     const table = useReactTable({
-        data,
+        data: filteredData,
         columns,
         getCoreRowModel: getCoreRowModel(),
         onColumnFiltersChange: setColumnFilters,
@@ -51,19 +64,11 @@ export function DataTable<TData, TValue>({
         <div className={`overflow-hidden ${className}`}>
             <div className="flex items-center justify-between py-4">
                 <Input
-                    placeholder="Search by email..."
-                    value={
-                        (table.getColumn("email_address")?.getFilterValue() as string) ??
-                        ""
-                    }
-                    onChange={(event) =>
-                        table
-                            .getColumn("email_address")
-                            ?.setFilterValue(event.target.value)
-                    }
+                    placeholder="Search by email or department..."
+                    value={globalSearch}
+                    onChange={(event) => setGlobalSearch(event.target.value)}
                     className="max-w-sm"
                 />
-
                 {children}
             </div>
             <ScrollArea className="h-[calc(100vh-20rem)]" type="always">
@@ -77,8 +82,7 @@ export function DataTable<TData, TValue>({
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
-                                                      header.column.columnDef
-                                                          .header,
+                                                      header.column.columnDef.header,
                                                       header.getContext()
                                                   )}
                                         </TableHead>
@@ -92,27 +96,18 @@ export function DataTable<TData, TValue>({
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
-                                    data-state={
-                                        row.getIsSelected() && "selected"
-                                    }
+                                    data-state={row.getIsSelected() && "selected"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        
                                         <TableCell key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )}
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}
                                 </TableRow>
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell
-                                    colSpan={columns.length}
-                                    className="h-24 text-center"
-                                >
+                                <TableCell colSpan={columns.length} className="h-24 text-center">
                                     No results.
                                 </TableCell>
                             </TableRow>
