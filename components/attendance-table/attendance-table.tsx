@@ -12,7 +12,7 @@ export interface Columns {
     id: string;
     partner_id: string | number;
     email_address: string;
-    department: string;
+    section: string;
     checkIn: string;
     check_out: string;
 }
@@ -31,8 +31,8 @@ const columns: ColumnDef<Columns>[] = [
         header: "Email Address",
     },
     {
-        accessorKey: "department",
-        header: "Department",
+        accessorKey: "section",
+        header: "Section",
     },
     {
         accessorKey: "checkIn",

@@ -26,7 +26,7 @@ const AttendanceTableServer: React.FC<AttendanceTableServerProps> = async ({
                 id: index.toString(),
                 partner_id: item[4] as string | number,
                 email_address: item[5] as string,
-                department: item[6] as string,
+                section: item[6] as string,
                 checkIn: item[10] as string,
                 check_out: item[11] as string,
             };
