@@ -1,4 +1,4 @@
-name: Next.js Build & Artifact Creation
+name: Next.js CI
 
 
 # 1. Workflow Triggers
@@ -60,54 +60,4 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      # Step 6: Build Next.js project
-      # Creates the optimized, server-ready code in the `.next` directory.
-      - name: Build Next.js project
-        run: npm run build
-
-      # Step 7: Create a previewable source package (non-fatal)
-      # This archive contains the repository source (excluding node_modules,
-      # .git, and .next) along with an INSTALL.md that tells the downloader
-      # how to install dependencies and run the project locally with
-      # `npm run dev` for quick inspection.
-      - name: Create INSTALL.md
-        run: |
-          cat > INSTALL.md <<'EOF'
-          # Preview Instructions
-
-          This archive contains the source for the Project Harmony frontend.
-
-          To preview locally:
-
-          1. Extract the archive:
-             unzip project-harmony-frontend-preview.zip -d project-harmony-frontend-preview
-
-          2. Change into the project folder:
-             cd project-harmony-frontend-preview
-
-          3. Install dependencies (recommended):
-             npm ci
-
-          4. Start the dev server (recommended for local preview):
-             npm run dev
-
-          5. Open http://localhost:3000 in your browser (or the port shown by Next.js).
-
-          Notes:
-          - The dev server requires Node.js (v18 recommended).
-          - If you prefer a production-like preview, run `npm run build` then
-            `npm start` (this requires the same Node environment).
-          EOF
-
-      - name: Package source preview zip
-        run: |
-          # Create a zip of the repository root but exclude node_modules, .git, and .next
-          ZIP_NAME=project-harmony-frontend-preview.zip
-          zip -r "$ZIP_NAME" . -x "node_modules/*" ".git/*" ".next/*" "$ZIP_NAME" || true
-
-      - name: Upload previewable source artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: project-harmony-frontend-preview
-          path: project-harmony-frontend-preview.zip
-            
+   
