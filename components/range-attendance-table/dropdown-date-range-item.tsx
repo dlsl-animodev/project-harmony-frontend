@@ -1,6 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
+import DatePicker from "../date-picker";
+import { Button } from "../ui/button";
+
+import { DropdownMenuItem } from "../ui/dropdown-menu";
 
 import {
     Dialog,
@@ -11,19 +16,26 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
 
+import { Label } from "../ui/label";
 import { useRouter } from "next/navigation";
-
 import { formatDateAsYYYYMMDD } from "@/lib/utils";
 
-const CustomDateRangerPicker = () => {
-    const router = useRouter();
+interface DropdownDateRangeItemProps {
+    setOpen : Dispatch<SetStateAction<boolean>>
+}
 
+const DropdownDateRangeItem : React.FC<DropdownDateRangeItemProps> = ({
+    setOpen,
+}) => {
     const [startDate, setStartDate] = useState<Date | undefined>(undefined);
     const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
+    const router = useRouter();
+
     const handleSetCustomDateRange = () => {
+        setOpen(false);
+
         const formattedStartDate = formatDateAsYYYYMMDD(startDate);
         const formattedEndDate = formatDateAsYYYYMMDD(endDate);
 
@@ -35,7 +47,9 @@ const CustomDateRangerPicker = () => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button>Custom</Button>
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                    Get records for a date range
+                </DropdownMenuItem>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -66,47 +80,4 @@ const CustomDateRangerPicker = () => {
     );
 };
 
-export default CustomDateRangerPicker;
-
-import * as React from "react";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-
-import { Calendar } from "@/components/ui/calendar";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { Label } from "../ui/label";
-
-interface DatePickerProps {
-    state: Date | undefined;
-    setState: React.Dispatch<React.SetStateAction<Date | undefined>>;
-}
-
-const DatePicker: React.FC<DatePickerProps> = ({ state, setState }) => {
-    const [open, setOpen] = useState(false);
-    const handleOnSelect = (date: Date | undefined) => {
-        setState(date);
-        setOpen(false);
-    }
-
-    return (
-        <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-                <Button
-                    variant="outline"
-                    data-empty={!state}
-                    className="data-[empty=true]:text-muted-foreground w-full justify-start text-left font-normal mt-2"
-                >
-                    <CalendarIcon />
-                    {state ? format(state, "PPP") : <span>Pick a date</span>}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={state} onSelect={handleOnSelect} />
-            </PopoverContent>
-        </Popover>
-    );
-};
+export default DropdownDateRangeItem;
