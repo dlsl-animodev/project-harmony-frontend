@@ -1,13 +1,20 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { fetchJSON, groupDateRangeByDay } from "@/lib/utils";
+import {
+    fetchJSON,
+    formatDateForRender,
+    groupDateRangeByDay,
+} from "@/lib/utils";
 import Loader from "@/components/loader";
 import NoDataMessage from "../no-data-message";
 import AttendanceTable from "../attendance-table/attendance-table";
 import { ScrollArea } from "../ui/scroll-area";
-import { BentoContainer } from "../bento-container";
+import { BentoContainer, BentoContainerHeader } from "../bento-container";
 import { AttendanceRecord, DateRangeResponse } from "@/lib/types";
+import { Description, Title } from "../texts";
+import AlertMessage from "../alert-message";
+import ShareButton from "../attendance-table/share-button";
 
 interface RangeAttendanceTableProps {
     startDate: string;
@@ -76,16 +83,36 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
     );
 
     return (
-        <ScrollArea className={`w-full h-full  overflow-y-auto ${className}`} type="always">
-            <BentoContainer className="border-none bg-background">
+        <ScrollArea
+            className={`w-full h-full  overflow-y-auto ${className}`}
+            type="always"
+        >
+            <BentoContainer className="border-none bg-background space-y-8">
+                <BentoContainerHeader className="flex items-center justify-between">
+                    <div>
+                        <Title>
+                            Attendance Records from{" "}
+                            {formatDateForRender(startDate)} to{" "}
+                            {formatDateForRender(endDate)}
+                        </Title>
+                        <Description>
+                            Click the custom button again to change the date
+                            range.
+                        </Description>
+                    </div>
+                    <ShareButton fromRange={true}>Share Record Range</ShareButton>
+                </BentoContainerHeader>
+
+                <AlertMessage title="If you do not see any records for certain dates, it may be because there were no attendance records for those dates." />
+
                 {Object.entries(formattedDates).map(([date, records]) => (
                     <div key={date} className="mb-8">
-                        <h2 className="text-2xl font-semibold mb-4">{date}</h2>
                         <AttendanceTable
                             date={date}
                             data={records}
                             className={className}
                             tableClassName="h-fit"
+                            withShareButton={false}
                         />
                     </div>
                 ))}

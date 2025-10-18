@@ -48,9 +48,10 @@ const columns: ColumnDef<Columns>[] = [
 
 interface AttendanceTableProps {
     className?: string;
-    tableClassName? : string;
+    tableClassName?: string;
     date: string;
     data: Columns[];
+    withShareButton?: boolean;
 }
 
 const AttendanceTable: React.FC<AttendanceTableProps> = ({
@@ -58,6 +59,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({
     tableClassName,
     date,
     data,
+    withShareButton,
 }) => {
     return (
         <BentoContainer className={`${className} bg-background`}>
@@ -76,8 +78,13 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({
                 THE CHILDREN OF THE DATA TABLE IS THE BUTTONS IN THE RIGHT SIDE FOR ADDITIONAL CONTROLS  
                 THE BUTTONS CAN NOT DIRECTLY INTERACT WITH THE DATATABLE BUT THROUGH THE DATA STATE PROPS
             */}
-            <DataTable className={className} tableClassName={tableClassName}  data={data} columns={columns}>
-                <ShareButton />
+            <DataTable
+                className={className}
+                tableClassName={tableClassName}
+                data={data}
+                columns={columns}
+            >
+                {withShareButton && <ShareButton />}
             </DataTable>
         </BentoContainer>
     );
