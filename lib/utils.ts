@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { DateType } from "./types";
+import { AttendanceRecord, DateType } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -12,6 +12,15 @@ export function formatDateForRender(dateStr: string) {
         month: "long",
         day: "numeric",
     });
+}
+
+export function formatDateAsYYYYMMDD(date: Date | undefined) {
+    if (!date) return "";
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
 }
 
 export function formatTimeForRender(isoString: string) {
@@ -37,6 +46,32 @@ export function groupDatesByMonth(dates: DateType[]) {
         }
         acc[monthYear].push(item);
 
+        return acc;
+    }, {});
+}
+
+export function groupDateRangeByDay(data: AttendanceRecord[] | null) {
+    if (!data) return {};
+
+    return data.reduce((acc: Record<string, typeof data>, item) => {
+        const date = new Date(item.checkIn);
+
+        if (!item.checkIn || isNaN(date.getTime())) {
+            console.warn("Skipping invalid date for item:", item);
+            return acc;
+        }
+
+        const dayKey = date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+
+        if (!acc[dayKey]) {
+            acc[dayKey] = [];
+        }
+
+        acc[dayKey].push(item);
         return acc;
     }, {});
 }

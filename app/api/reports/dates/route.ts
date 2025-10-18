@@ -13,7 +13,6 @@ export async function GET() {
     return NextResponse.json(
       {
         success: true,
-        message: response.message,
         count: response.count,
         dates: response.dates,
         timestamp: formatTimestamp(),
