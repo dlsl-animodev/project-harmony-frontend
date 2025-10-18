@@ -8,7 +8,6 @@ import { DropdownMenuItem } from "../ui/dropdown-menu";
 
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
     DialogHeader,
@@ -20,9 +19,10 @@ import { Label } from "../ui/label";
 import { useRouter } from "next/navigation";
 import { formatDateAsYYYYMMDD } from "@/lib/utils";
 import { DropdownCustomItemProps } from "../custom-shortcut/custom-shortcut";
+import { toast } from "sonner";
 
-const DropdownDateRangeItem : React.FC<DropdownCustomItemProps> = ({
-    setOpen,
+const DropdownDateRangeItem: React.FC<DropdownCustomItemProps> = ({
+    setDropdownOpen,
 }) => {
     const [startDate, setStartDate] = useState<Date | undefined>(undefined);
     const [endDate, setEndDate] = useState<Date | undefined>(undefined);
@@ -30,7 +30,12 @@ const DropdownDateRangeItem : React.FC<DropdownCustomItemProps> = ({
     const router = useRouter();
 
     const handleSetCustomDateRange = () => {
-        setOpen(false);
+        if (!startDate || !endDate) {
+            toast.error("Please select both start and end dates.");
+            return;
+        }
+
+        setDropdownOpen(false);
 
         const formattedStartDate = formatDateAsYYYYMMDD(startDate);
         const formattedEndDate = formatDateAsYYYYMMDD(endDate);
@@ -66,11 +71,9 @@ const DropdownDateRangeItem : React.FC<DropdownCustomItemProps> = ({
                         <DatePicker state={endDate} setState={setEndDate} />
                     </div>
                 </section>
-                <DialogClose asChild>
-                    <Button onClick={handleSetCustomDateRange}>
-                        Set custom date range view
-                    </Button>
-                </DialogClose>
+                <Button onClick={handleSetCustomDateRange}>
+                    Set custom date range view
+                </Button>
             </DialogContent>
         </Dialog>
     );

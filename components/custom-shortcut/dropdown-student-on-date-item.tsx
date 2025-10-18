@@ -2,7 +2,6 @@
 
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
     DialogHeader,
@@ -37,6 +36,8 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { cn, formatDateAsYYYYMMDD, formatDateForRender } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
     studentId: z.string().min(1, "Student ID is required"),
@@ -44,8 +45,10 @@ const formSchema = z.object({
 });
 
 const DropdownStudentOnDateItem: React.FC<DropdownCustomItemProps> = ({
-    setOpen,
+    setDropdownOpen,
 }) => {
+    const [dialogOpen, setDialogOpen] = useState(false);
+
     const router = useRouter();
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -57,7 +60,13 @@ const DropdownStudentOnDateItem: React.FC<DropdownCustomItemProps> = ({
     });
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
-        setOpen(false);
+        if (!values.studentId || !values.date) {
+            toast.error("Please provide both Student ID and Date.");
+            return;
+        }
+
+        setDropdownOpen(false);
+        setDialogOpen(false);
 
         const formattedDate = formatDateAsYYYYMMDD(values.date);
 
@@ -66,7 +75,7 @@ const DropdownStudentOnDateItem: React.FC<DropdownCustomItemProps> = ({
     };
 
     return (
-        <Dialog>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                     Get student record on date
@@ -153,11 +162,9 @@ const DropdownStudentOnDateItem: React.FC<DropdownCustomItemProps> = ({
                             )}
                         />
 
-                        <DialogClose asChild>
-                            <Button type="submit" className="w-full">
-                                Set studentId and date for record
-                            </Button>
-                        </DialogClose>
+                        <Button type="submit" className="w-full">
+                            Set studentId and date for record
+                        </Button>
                     </form>
                 </Form>
             </DialogContent>

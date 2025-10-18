@@ -18,22 +18,22 @@ import { Dispatch, SetStateAction } from "react";
 
 // Used by the items in the custom shortcut dropdown menu
 export interface DropdownCustomItemProps {
-    setOpen: Dispatch<SetStateAction<boolean>>;
+    setDropdownOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const CustomShortcut = () => {
-    const [open, setOpen] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     return (
-        <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
             <DropdownMenuTrigger asChild>
                 <Button>Custom</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>Custom Shortcuts</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownStudentOnDateItem setOpen={setOpen} />
-                <DropdownDateRangeItem setOpen={setOpen} />
+                <DropdownStudentOnDateItem setDropdownOpen={setDropdownOpen} />
+                <DropdownDateRangeItem setDropdownOpen={setDropdownOpen} />
             </DropdownMenuContent>
         </DropdownMenu>
     );
