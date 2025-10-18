@@ -8,8 +8,8 @@ import { Calendar } from "lucide-react";
 import { useDates } from "@/context/dates-context";
 import { ScrollArea } from "../ui/scroll-area";
 import { DateType } from "@/lib/types";
-import CustomDateRangerPicker from "../range-attendance-table/custom-date-range-picker";
 import { usePathname } from "next/navigation";
+import CustomShortcut from "../range-attendance-table/custom-shortcut";
 
 interface DaysSidebarProps {
     className?: string;
@@ -50,7 +50,7 @@ const DaysSidebar: React.FC<DaysSidebarProps> = ({
                         <Calendar size={20} />
                         <SubTitle> Choose Day </SubTitle>
                     </div>
-                    <CustomDateRangerPicker />
+                    <CustomShortcut />
                 </section>
                 <Description className="text-background">
                     Select a day to view records.
