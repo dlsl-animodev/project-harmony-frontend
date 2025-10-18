@@ -48,12 +48,14 @@ const columns: ColumnDef<Columns>[] = [
 
 interface AttendanceTableProps {
     className?: string;
+    tableClassName? : string;
     date: string;
     data: Columns[];
 }
 
 const AttendanceTable: React.FC<AttendanceTableProps> = ({
     className,
+    tableClassName,
     date,
     data,
 }) => {
@@ -74,7 +76,7 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({
                 THE CHILDREN OF THE DATA TABLE IS THE BUTTONS IN THE RIGHT SIDE FOR ADDITIONAL CONTROLS  
                 THE BUTTONS CAN NOT DIRECTLY INTERACT WITH THE DATATABLE BUT THROUGH THE DATA STATE PROPS
             */}
-            <DataTable className={className} data={data} columns={columns}>
+            <DataTable className={className} tableClassName={tableClassName}  data={data} columns={columns}>
                 <ShareButton />
             </DataTable>
         </BentoContainer>

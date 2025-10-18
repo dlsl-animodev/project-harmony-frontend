@@ -8,6 +8,7 @@ import {
     ColumnFiltersState,
     getFilteredRowModel,
 } from "@tanstack/react-table";
+import { twMerge } from "tailwind-merge";
 
 import { Input } from "./input";
 import {
@@ -27,6 +28,7 @@ interface DataTableProps<TData, TValue> {
     data: TData[];
     className?: string;
     children?: React.ReactNode;
+    tableClassName? : string;
 }
 
 export function DataTable<TData, TValue>({
@@ -34,6 +36,7 @@ export function DataTable<TData, TValue>({
     data,
     className,
     children,
+    tableClassName,
 }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [globalSearch, setGlobalSearch] = useState("");
@@ -71,7 +74,7 @@ export function DataTable<TData, TValue>({
                 />
                 {children}
             </div>
-            <ScrollArea className="h-[calc(100vh-20rem)]" type="always">
+            <ScrollArea className={twMerge(`h-[calc(100vh-20rem)]`, tableClassName)} type="always">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (

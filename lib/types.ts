@@ -123,3 +123,11 @@ export interface AttendanceResponse {
   googleSheets: GoogleSheetsResponse;
   timestamp: string;
 }
+
+export interface DateRangeResponse {
+  success: boolean;
+  message: string;
+  totalRecords: number;
+  data: AttendanceRecord[];
+  timestamp: string;
+}

@@ -8,7 +8,7 @@ import { Calendar } from "lucide-react";
 import { useDates } from "@/context/dates-context";
 import { ScrollArea } from "../ui/scroll-area";
 import { DateType } from "@/lib/types";
-import CustomDateRangerPicker from "./custom-date-range-picker";
+import CustomDateRangerPicker from "../range-attendance-table/custom-date-range-picker";
 import { usePathname } from "next/navigation";
 
 interface DaysSidebarProps {
