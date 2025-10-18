@@ -1,4 +1,4 @@
-import { ReportResponse } from "@/app/api/getReportByDate/route";
+import { DateResponse } from "@/lib/types";
 import { BentoContainer } from "../bento-container";
 import { SubTitle, Description } from "../texts";
 import AttendanceTable from "./attendance-table";
@@ -15,13 +15,13 @@ const AttendanceTableServer: React.FC<AttendanceTableServerProps> = async ({
 }) => {
     if (!date) return <NoDayChosen />;
 
-    const route = `${process.env.NEXT_PUBLIC_BASE_URL}/api/getReportByDate?date=${date}`;
-    const data = await fetchJSON<ReportResponse>(route);
+    const route = `${process.env.NEXT_PUBLIC_BASE_URL}/api/reports/date/${date}`;
+    const data = await fetchJSON<DateResponse>(route);
 
     if (!data.success) return <NoDataMessage className={className} />
 
     const formattedData =
-        data.data.data.map((item, index) => {
+        data.data.data?.map((item, index) => {
             return {
                 id: index.toString(),
                 partner_id: item[4] as string | number,

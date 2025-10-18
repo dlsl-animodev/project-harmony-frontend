@@ -1,7 +1,7 @@
 import { fetchJSON, formatDatesWithIndexAsId } from "@/lib/utils";
 import DaysSidebar from "./days-sidebar";
-import { GetDatesResponse } from "@/app/api/getDates/route";
 import NoDataMessage from "../no-data-message";
+import { AvailableDatesResponse } from "@/lib/types";
 
 
 interface DaysSidebarProps {
@@ -9,8 +9,8 @@ interface DaysSidebarProps {
 }
 
 const DaysSidebarServer: React.FC<DaysSidebarProps> = async ({ className }) => {
-    const route = `${process.env.NEXT_PUBLIC_BASE_URL}/api/getDates`;
-    const data = await fetchJSON<GetDatesResponse>(route);
+    const route = `${process.env.NEXT_PUBLIC_BASE_URL}/api/reports/dates`;
+    const data = await fetchJSON<AvailableDatesResponse>(route);
 
     if (!data.success) return <NoDataMessage />
 

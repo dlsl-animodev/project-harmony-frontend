@@ -43,10 +43,10 @@ export interface SheetsResponse {
 }
 
 export interface AvailableDatesResponse {
-  status: string;
-  message: string;
+  success: string;
   count: number;
   dates: string[];
+  timestamp : string;
 }
 
 export interface AttendanceRecord {
@@ -70,6 +70,13 @@ export interface SheetsGetResponse {
   totalRows: number;
   headers: string[];
   data: unknown[][];
+}
+
+export interface DateResponse {
+  success : boolean;
+  message : string;
+  data : SheetsGetResponse;
+  timestamp : string;
 }
 
 export interface ExternalApiResponse {
