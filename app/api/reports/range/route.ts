@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAttendanceByDateRange } from "@/lib/services/sheets-service";
 import { formatTimestamp } from "@/lib/utils/transformers";
-import { DateRangeResponse } from "@/lib/types";
+import { AttendanceRecordResponse } from "@/lib/types";
 
 // GET /api/reports/range?start=YYYY-MM-DD&end=YYYY-MM-DD
 // get attendance records for a date range
 
 export async function GET(
     request: NextRequest
-): Promise<NextResponse<DateRangeResponse | { error: string }>> {
+): Promise<NextResponse<AttendanceRecordResponse | { error: string }>> {
     try {
         const { searchParams } = new URL(request.url);
         const start = searchParams.get("start");

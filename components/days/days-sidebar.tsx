@@ -9,7 +9,7 @@ import { useDates } from "@/context/dates-context";
 import { ScrollArea } from "../ui/scroll-area";
 import { DateType } from "@/lib/types";
 import { usePathname } from "next/navigation";
-import CustomShortcut from "../range-attendance-table/custom-shortcut";
+import CustomShortcut from "../custom-shortcut/custom-shortcut";
 
 interface DaysSidebarProps {
     className?: string;

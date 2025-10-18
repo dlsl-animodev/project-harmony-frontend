@@ -8,7 +8,7 @@ const NoDataMessage: React.FC<NoDataMessageProps> = ({ className }) => {
     return (
         <BentoContainer
             className={twMerge(
-                `bg-transparent flex items-center justify-center`,
+                `bg-transparent flex items-center justify-center h-full w-full`,
                 className
             )}
         >

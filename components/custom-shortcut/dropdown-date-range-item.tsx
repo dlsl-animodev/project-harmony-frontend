@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Dispatch, SetStateAction } from "react";
 import DatePicker from "../date-picker";
 import { Button } from "../ui/button";
 
@@ -20,12 +19,9 @@ import {
 import { Label } from "../ui/label";
 import { useRouter } from "next/navigation";
 import { formatDateAsYYYYMMDD } from "@/lib/utils";
+import { DropdownCustomItemProps } from "../custom-shortcut/custom-shortcut";
 
-interface DropdownDateRangeItemProps {
-    setOpen : Dispatch<SetStateAction<boolean>>
-}
-
-const DropdownDateRangeItem : React.FC<DropdownDateRangeItemProps> = ({
+const DropdownDateRangeItem : React.FC<DropdownCustomItemProps> = ({
     setOpen,
 }) => {
     const [startDate, setStartDate] = useState<Date | undefined>(undefined);

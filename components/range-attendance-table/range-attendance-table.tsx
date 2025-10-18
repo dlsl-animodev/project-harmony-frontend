@@ -11,7 +11,7 @@ import NoDataMessage from "../no-data-message";
 import AttendanceTable from "../attendance-table/attendance-table";
 import { ScrollArea } from "../ui/scroll-area";
 import { BentoContainer, BentoContainerHeader } from "../bento-container";
-import { AttendanceRecord, DateRangeResponse } from "@/lib/types";
+import { AttendanceRecord, AttendanceRecordResponse } from "@/lib/types";
 import { Description, Title } from "../texts";
 import AlertMessage from "../alert-message";
 import ShareButton from "../attendance-table/share-button";
@@ -27,7 +27,7 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
     endDate,
     className,
 }) => {
-    const [data, setData] = useState<DateRangeResponse | null>(null);
+    const [data, setData] = useState<AttendanceRecordResponse | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -36,7 +36,7 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
         const fetchData = async () => {
             setLoading(true);
             const route = `${process.env.NEXT_PUBLIC_BASE_URL}/api/reports/range?start=${startDate}&end=${endDate}`;
-            const res = await fetchJSON<DateRangeResponse>(route);
+            const res = await fetchJSON<AttendanceRecordResponse>(route);
 
             if (isMounted) {
                 setData(res);

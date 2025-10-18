@@ -124,7 +124,7 @@ export interface AttendanceResponse {
   timestamp: string;
 }
 
-export interface DateRangeResponse {
+export interface AttendanceRecordResponse {
   success: boolean;
   message: string;
   totalRecords: number;
