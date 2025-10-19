@@ -137,18 +137,17 @@
   animation: shine 4s linear infinite;
 }
 
-/* 🌈 Custom Scrollbar Style */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: hsl(230, 94%, 97%); /* your light bg */
+  background: hsl(230, 94%, 97%); 
   border-radius: 8px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: hsl(231, 95%, 54%); /* your primary color */
+  background: hsl(231, 95%, 54%);
   border-radius: 8px;
 }
 
@@ -194,4 +193,28 @@ body::-webkit-scrollbar-thumb:hover {
 html::-webkit-scrollbar-corner,
 body::-webkit-scrollbar-corner {
   background: transparent;
+}
+
+@keyframes audioPulse {
+  0% {
+    transform: scaleY(0.3);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(0.35);
+    opacity: 0.7;
+  }
+}
+
+.audio-wave-bar {
+  display: inline-block;
+  height: 60px;
+  border-radius: 9999px;
+  transform-origin: bottom center;
+  animation: audioPulse 1.6s ease-in-out infinite;
+  filter: blur(0.6px) saturate(1.2);
 }

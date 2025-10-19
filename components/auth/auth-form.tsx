@@ -79,6 +79,13 @@ const AuthForm : React.FC<AuthFormProps> = ({
         <div
             className="flex flex-col items-center justify-center h-[calc(100vh-3rem)] w-screen"
         >
+            <div>
+                <p> backend auth logic not yet implemented </p>
+                <Link href={"/home"} className="text-primary underline">
+                    Go to Home Page
+                </Link>
+            </div>
+
             <BentoContainer
                 className="bg-gradient-to-tl from-[#f9f5ff] via-[#f0e7ff] to-[#e2d9ff] shadow-md space-y-8 w-[30rem]"
             >
