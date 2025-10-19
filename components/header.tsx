@@ -72,10 +72,12 @@ const DesktopHeaderContent = () => {
             </section>
 
             <section className="flex items-center gap-2 z-20 ">
-                <Button>
-                    {" "}
-                    <User /> Account{" "}
-                </Button>
+                <Link href="/account">
+                    <Button>
+                        {" "}
+                        <User /> Account{" "}
+                    </Button>
+                </Link>
             </section>
         </>
     );
@@ -106,7 +108,7 @@ const MobileHeaderContent = () => {
         setSheetOpen(false);
         const formattedDate = formatDateAsYYYYMMDD(d);
         router.push(`/day/${formattedDate}`);
-    }
+    };
 
     return (
         <>
@@ -136,7 +138,7 @@ const MobileHeaderContent = () => {
                                 setState={setDate}
                                 onDateSelect={handleDateSelect}
                             />
-                            <CustomShortcut variant={'link'} className="mt-2" />
+                            <CustomShortcut variant={"link"} className="mt-2" />
                         </div>
 
                         <nav>
