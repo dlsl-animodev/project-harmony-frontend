@@ -20,10 +20,7 @@ const HomePage = () => {
     const groupedDates = groupDatesByMonth(dates);
 
     return (
-        <ScrollArea
-            className="h-[calc(100vh-9rem)] overflow-auto pr-6"
-            type="always"
-        >
+        <ScrollArea className="flex-1 overflow-auto" type="always">
             <BentoContainer className="border-none space-y-8 bg-background ">
                 <BentoContainerHeader>
                     <Title> Dashboard </Title>
@@ -33,9 +30,7 @@ const HomePage = () => {
                     </Description>
                 </BentoContainerHeader>
 
-                <AlertMessage
-                    title="If a date does not appear below, refresh the page or it meansthat there is no report for that day"
-                />
+                <AlertMessage title="If a date does not appear below, refresh the page or it meansthat there is no report for that day" />
 
                 {Object.entries(groupedDates).map(([monthYear, days]) => (
                     <DayCardsContainer key={monthYear} title={monthYear}>

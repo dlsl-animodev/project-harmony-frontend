@@ -8,7 +8,6 @@ import {
     ColumnFiltersState,
     getFilteredRowModel,
 } from "@tanstack/react-table";
-import { twMerge } from "tailwind-merge";
 
 import { Input } from "./input";
 import {
@@ -20,7 +19,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { useState, useMemo } from "react";
-import { ScrollArea } from "./scroll-area";
+import { twMerge } from "tailwind-merge";
 import { Columns } from "../attendance-table/attendance-table";
 
 interface DataTableProps<TData, TValue> {
@@ -28,7 +27,7 @@ interface DataTableProps<TData, TValue> {
     data: TData[];
     className?: string;
     children?: React.ReactNode;
-    tableClassName? : string;
+    tableClassName?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -46,7 +45,9 @@ export function DataTable<TData, TValue>({
         const q = globalSearch.trim().toLowerCase();
         if (!q) return data;
         return data.filter((row) => {
-            const email = String((row as Columns).email_address ?? "").toLowerCase();
+            const email = String(
+                (row as Columns).email_address ?? ""
+            ).toLowerCase();
             const dept = String((row as Columns).section ?? "").toLowerCase();
             return email.includes(q) || dept.includes(q);
         });
@@ -74,50 +75,52 @@ export function DataTable<TData, TValue>({
                 />
                 {children}
             </div>
-            <ScrollArea className={twMerge(`h-[calc(100vh-20rem)]`, tableClassName)} type="always">
-                <Table>
+            <div className={twMerge(`h-full w-full overflow-x-auto`, tableClassName)}>
+                <Table className="min-w-max">
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id}>
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                      header.column.columnDef.header,
-                                                      header.getContext()
-                                                  )}
-                                        </TableHead>
-                                    );
-                                })}
+                                {headerGroup.headers.map((header) => (
+                                    <TableHead key={header.id}>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                  header.column.columnDef
+                                                      .header,
+                                                  header.getContext()
+                                              )}
+                                    </TableHead>
+                                ))}
                             </TableRow>
                         ))}
                     </TableHeader>
                     <TableBody>
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                >
+                                <TableRow key={row.id}>
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext()
+                                            )}
                                         </TableCell>
                                     ))}
                                 </TableRow>
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                <TableCell
+                                    colSpan={columns.length}
+                                    className="h-24 text-center"
+                                >
                                     No results.
                                 </TableCell>
                             </TableRow>
                         )}
                     </TableBody>
                 </Table>
-            </ScrollArea>
+            </div>
         </div>
     );
 }

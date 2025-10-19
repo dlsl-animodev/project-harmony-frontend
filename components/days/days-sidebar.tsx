@@ -11,6 +11,8 @@ import { DateType } from "@/lib/types";
 import { usePathname } from "next/navigation";
 import CustomShortcut from "../custom-shortcut/custom-shortcut";
 
+import { useIsTablet } from "@/hooks/use-tablet";
+
 interface DaysSidebarProps {
     className?: string;
     formattedDates: DateType[];
@@ -20,6 +22,8 @@ const DaysSidebar: React.FC<DaysSidebarProps> = ({
     className,
     formattedDates,
 }) => {
+    const isTablet = useIsTablet();
+
     const { dates, setDates } = useDates();
 
     useEffect(() => {
@@ -36,6 +40,10 @@ const DaysSidebar: React.FC<DaysSidebarProps> = ({
             isActive: pathname === `/day/${date.text}`,
         }));
     }, [dates, pathname]);
+
+    if (isTablet) {
+        return null;
+    }
 
     return (
         <BentoContainer

@@ -11,14 +11,18 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { formatDateForRender } from "@/lib/utils";
+import { twMerge } from "tailwind-merge";
 
-interface DatePickerProps {
+// extends to the button props
+interface DatePickerProps  {
     state: Date | undefined;
     setState: React.Dispatch<React.SetStateAction<Date | undefined>>;
+    className? : string;
+    onDateSelect? : (date: Date) => void;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ state, setState }) => {
-    const [open, setOpen] = useState(false);
+const DatePicker: React.FC<DatePickerProps> = ({ state, setState, className, onDateSelect }) => {
+    const [popoverOpen, setPopoverOpen] = useState(false);
 
     const isFutureDate = (date: Date) => {
         const today = new Date();
@@ -28,20 +32,24 @@ const DatePicker: React.FC<DatePickerProps> = ({ state, setState }) => {
     };
 
     const handleOnSelect = (date: Date | undefined) => {
+        if (!date) return;
+
         setState(date);
-        setOpen(false);
+        setPopoverOpen(false);
+
+        if (onDateSelect) onDateSelect(date);
     };
 
     return (
-        <Popover open={open} onOpenChange={setOpen}>
+        <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
             <PopoverTrigger asChild>
                 <Button
                     variant="outline"
                     data-empty={!state}
-                    className="data-[empty=true]:text-muted-foreground w-full justify-start text-left font-normal mt-2"
+                    className={twMerge(`data-[empty=true]:text-muted-foreground w-full justify-start text-left font-normal mt-2 space-x-1 py-4.5`,className)}
                 >
-                    <CalendarIcon />
-                    {state ? formatDateForRender(state.toLocaleDateString()) : <span>Pick a date</span>}
+                    <CalendarIcon  />
+                    {state ? formatDateForRender(state.toLocaleDateString()) : <span className="font-medium">Pick a date</span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">

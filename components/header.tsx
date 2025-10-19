@@ -1,28 +1,62 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { User } from "lucide-react";
+import { Home, Menu, User } from "lucide-react";
+
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet";
+
+import { useIsTablet } from "@/hooks/use-tablet";
+import { useState } from "react";
+import { useMemo } from "react";
+import DatePicker from "./date-picker";
+import { useRouter } from "next/navigation";
+import { formatDateAsYYYYMMDD } from "@/lib/utils";
 
 const Header = () => {
+    const isTablet = useIsTablet();
+
+    const renderHeader = () => {
+        if (isTablet) return <MobileHeaderContent />;
+        return <DesktopHeaderContent />;
+    };
+
     return (
         <header
             className="
-    relative overflow-hidden
-    h-12 shadow-md border-b 
-    flex items-center justify-between 
-    px-[3rem] mt-4 mx-6 rounded-lg
-    text-primary
-    bg-gradient-to-b from-[#c9d1ff] via-[#e1b8ff] to-[#fcb5f8]
-  "
+                relative overflow-hidden
+                h-12 shadow-md border-b z-50
+                flex items-center justify-between 
+                px-[1rem] lg:px-[2rem] rounded-lg
+                text-primary
+                bg-gradient-to-b from-[#c9d1ff] via-[#e1b8ff] to-[#fcb5f8]
+            "
         >
             {/* Light overlay for soft depth */}
-            <div className="absolute inset-0 bg-gradient-to-tl from-white/40 to-transparent rounded-lg pointer-events-none z-0"></div>
+            <div className="absolute inset-0 bg-gradient-to-tl from-white/40 to-transparent rounded-b-lg pointer-events-none z-0"></div>
 
             {/* Animated light beam (between bg and text) */}
-            <div className="absolute inset-0 overflow-hidden rounded-lg pointer-events-none z-10">
+            <div className="absolute inset-0 overflow-hidden rounded-b-lg pointer-events-none z-10">
                 <div className="animate-shine absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent w-[200%]"></div>
             </div>
 
-            {/* Header content */}
+            {renderHeader()}
+        </header>
+    );
+};
+
+export default Header;
+
+const DesktopHeaderContent = () => {
+    return (
+        <>
             <section className="relative z-20 flex items-center gap-14">
                 <Link href="/" className="font-bold text-lg">
                     Project Harmony
@@ -36,12 +70,97 @@ const Header = () => {
                 </nav>
             </section>
 
-            {/* RIGHT SECTION FOR FUTURE ELEMENTS  */}
-            <section className="flex items-center gap-2 z-20">
-                <Button> <User/> Account </Button>
+            <section className="flex items-center gap-2 z-20 ">
+                <Button>
+                    {" "}
+                    <User /> Account{" "}
+                </Button>
             </section>
-        </header>
+        </>
     );
 };
 
-export default Header;
+const ICON_SIZE = 19 as const;
+
+const MobileHeaderContent = () => {
+    const [sheetOpen, setSheetOpen] = useState(false);
+    const [date, setDate] = useState<Date | undefined>(undefined);
+
+    const navs = useMemo(
+        () => [
+            { href: "/home", label: "Home", icon: <Home size={ICON_SIZE} /> },
+            {
+                href: "/account",
+                label: "Account",
+                icon: <User size={ICON_SIZE} />,
+            },
+        ],
+        []
+    );
+
+    const router = useRouter();
+    const handleDateSelect = (d: Date) => {
+        if (!d) return;
+
+        setSheetOpen(false);
+        const formattedDate = formatDateAsYYYYMMDD(d);
+        router.push(`/day/${formattedDate}`);
+    }
+
+    return (
+        <>
+            <section className="relative z-20 flex items-center gap-14">
+                <Link href="/" className="font-bold text-lg">
+                    Project Harmony
+                </Link>
+            </section>
+
+            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+                <SheetTrigger asChild>
+                    <Button className="z-20">
+                        <Menu />
+                    </Button>
+                </SheetTrigger>
+                <SheetContent className="rounded-l-2xl ">
+                    <SheetHeader>
+                        <SheetTitle>Menu</SheetTitle>
+                        <SheetDescription>
+                            Quickly navigate to different sections.
+                        </SheetDescription>
+                    </SheetHeader>
+                    <section className="border-t border-t-muted-foreground/20 pt-3">
+                        <div className="mb-3">
+                            <DatePicker
+                                state={date}
+                                setState={setDate}
+                                onDateSelect={handleDateSelect}
+                            />
+                        </div>
+
+                        <nav>
+                            <ul className="flex flex-col gap-2 font-medium text-sm">
+                                {navs.map((nav) => (
+                                    <li
+                                        key={nav.href}
+                                        className="
+                                        flex items-center gap-2 text-muted-foreground px-2.5 py-2 rounded-md
+                                        hover:bg-accent hover:text-muted-foreground hover:cursor-pointer hover:pl-4
+                                        transition-all
+                                    "
+                                    >
+                                        <Link
+                                            href={nav.href}
+                                            className="flex items-center gap-2"
+                                        >
+                                            {nav.icon} {nav.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
+                    </section>
+                </SheetContent>
+            </Sheet>
+        </>
+    );
+};
