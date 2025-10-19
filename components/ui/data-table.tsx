@@ -40,7 +40,6 @@ export function DataTable<TData, TValue>({
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [globalSearch, setGlobalSearch] = useState("");
 
-    // Filter data client-side: match email_address OR department
     const filteredData = useMemo(() => {
         const q = globalSearch.trim().toLowerCase();
         if (!q) return data;
@@ -65,8 +64,13 @@ export function DataTable<TData, TValue>({
     });
 
     return (
-        <div className={`overflow-hidden ${className}`}>
-            <div className="flex items-center justify-between py-4">
+        <div
+            className={twMerge(
+                `flex flex-col h-full min-h-0 ${className}overflow-hidden`
+            )}
+        >
+            {/* controls/header — prevent it from shrinking */}
+            <div className="flex items-center justify-between py-4 shrink-0">
                 <Input
                     placeholder="Search by email or department..."
                     value={globalSearch}
@@ -75,7 +79,13 @@ export function DataTable<TData, TValue>({
                 />
                 {children}
             </div>
-            <div className={twMerge(`h-full w-full overflow-x-auto`, tableClassName)}>
+
+            <div
+                className={twMerge(
+                    `flex-1 min-h-0 overflow-auto w-full`,
+                    tableClassName
+                )}
+            >
                 <Table className="min-w-max">
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -94,6 +104,7 @@ export function DataTable<TData, TValue>({
                             </TableRow>
                         ))}
                     </TableHeader>
+
                     <TableBody>
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (

@@ -37,7 +37,7 @@ const AttendanceTableServer: React.FC<AttendanceTableServerProps> = async ({
             className={className}
             date={date}
             data={formattedData}
-        />
+            />
     );
 };
 

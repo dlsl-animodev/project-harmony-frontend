@@ -62,8 +62,10 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({
     withShareButton,
 }) => {
     return (
-        <BentoContainer className={`${className} bg-background`}>
-            <header className="border-b pb-2">
+        <BentoContainer
+            className={`${className} flex flex-col h-full overflow-hidden bg-background`}
+        >
+            <header className="border-b pb-2 shrink-0">
                 <SubTitle>
                     {" "}
                     Record for day: {formatDateForRender(date)}{" "}
@@ -74,12 +76,8 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({
                 </Description>
             </header>
 
-            {/* 
-                THE CHILDREN OF THE DATA TABLE IS THE BUTTONS IN THE RIGHT SIDE FOR ADDITIONAL CONTROLS  
-                THE BUTTONS CAN NOT DIRECTLY INTERACT WITH THE DATATABLE BUT THROUGH THE DATA STATE PROPS
-            */}
             <DataTable
-                className={className}
+                className="flex-1 min-h-0"
                 tableClassName={tableClassName}
                 data={data}
                 columns={columns}
