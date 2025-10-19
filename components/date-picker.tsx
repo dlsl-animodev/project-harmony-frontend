@@ -46,7 +46,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ state, setState, className, onD
                 <Button
                     variant="outline"
                     data-empty={!state}
-                    className={twMerge(`data-[empty=true]:text-muted-foreground w-full justify-start text-left font-normal mt-2 space-x-1 py-4.5`,className)}
+                    className={twMerge(`data-[empty=true]:text-muted-foreground w-full  justify-start text-left font-normal mt-2 space-x-1 py-4.5`,className)}
                 >
                     <CalendarIcon  />
                     {state ? formatDateForRender(state.toLocaleDateString()) : <span className="font-medium">Pick a date</span>}

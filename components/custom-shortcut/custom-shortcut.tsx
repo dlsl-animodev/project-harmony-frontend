@@ -12,7 +12,7 @@ import DropdownStudentOnDateItem from "./dropdown-student-on-date-item";
 import DropdownDateRangeItem from "./dropdown-date-range-item";
 
 import { Button } from "../ui/button";
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { Dispatch, SetStateAction } from "react";
 
@@ -21,13 +21,15 @@ export interface DropdownCustomItemProps {
     setDropdownOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const CustomShortcut = () => {
+type CustomShortcutProps = React.ComponentProps<typeof Button>
+
+const CustomShortcut : React.FC<CustomShortcutProps> = (props) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     return (
         <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
             <DropdownMenuTrigger asChild>
-                <Button>Custom</Button>
+                <Button {...props}>Custom</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>Custom Shortcuts</DropdownMenuLabel>

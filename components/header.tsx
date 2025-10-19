@@ -19,6 +19,7 @@ import { useMemo } from "react";
 import DatePicker from "./date-picker";
 import { useRouter } from "next/navigation";
 import { formatDateAsYYYYMMDD } from "@/lib/utils";
+import CustomShortcut from "./custom-shortcut/custom-shortcut";
 
 const Header = () => {
     const isTablet = useIsTablet();
@@ -129,12 +130,13 @@ const MobileHeaderContent = () => {
                         </SheetDescription>
                     </SheetHeader>
                     <section className="border-t border-t-muted-foreground/20 pt-3">
-                        <div className="mb-3">
+                        <div className="mb-3 w-fit flex items-center gap-1">
                             <DatePicker
                                 state={date}
                                 setState={setDate}
                                 onDateSelect={handleDateSelect}
                             />
+                            <CustomShortcut variant={'link'} className="mt-2" />
                         </div>
 
                         <nav>
