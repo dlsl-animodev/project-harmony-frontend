@@ -1,9 +1,9 @@
-import { ReportResponse } from "@/app/api/getReportByDate/route";
+import { DateResponse } from "@/lib/types";
 import { BentoContainer } from "../bento-container";
 import { SubTitle, Description } from "../texts";
 import AttendanceTable from "./attendance-table";
 import { fetchJSON } from "@/lib/utils";
-import DataLoadingFailed from "../data-loading-failed";
+import NoDataMessage from "../no-data-message";
 
 interface AttendanceTableServerProps {
     className?: string;
@@ -15,18 +15,18 @@ const AttendanceTableServer: React.FC<AttendanceTableServerProps> = async ({
 }) => {
     if (!date) return <NoDayChosen />;
 
-    const route = `${process.env.NEXT_PUBLIC_BASE_URL}/api/getReportByDate?date=${date}`;
-    const data = await fetchJSON<ReportResponse>(route);
+    const route = `${process.env.NEXT_PUBLIC_BASE_URL}/api/reports/date/${date}`;
+    const data = await fetchJSON<DateResponse>(route);
 
-    if (!data.success) return <DataLoadingFailed className={className} />
+    if (!data.success) return <NoDataMessage className={className} />
 
     const formattedData =
-        data.data.data.map((item, index) => {
+        data.data.data?.map((item, index) => {
             return {
                 id: index.toString(),
                 partner_id: item[4] as string | number,
                 email_address: item[5] as string,
-                department: item[6] as string,
+                section: item[6] as string,
                 checkIn: item[10] as string,
                 check_out: item[11] as string,
             };
@@ -37,7 +37,7 @@ const AttendanceTableServer: React.FC<AttendanceTableServerProps> = async ({
             className={className}
             date={date}
             data={formattedData}
-        />
+            />
     );
 };
 

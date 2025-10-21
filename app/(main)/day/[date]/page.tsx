@@ -20,7 +20,7 @@ const SingleDayPage = async ({ params }: SingleDayPageProps) => {
                     />
                 }
             >
-                <AttendanceTableServer className="w-full" date={date} />
+                <AttendanceTableServer className="w-full h-full" date={date} />
             </Suspense>
         </div>
     );

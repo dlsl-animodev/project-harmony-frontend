@@ -31,7 +31,7 @@ interface DayCardsProps {
 
 const DayCards: React.FC<DayCardsProps> = ({ children }) => {
     return (
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <ul className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
             {children}
         </ul>
     );
@@ -45,7 +45,7 @@ const DayCardItem: React.FC<DayCardItemProps> = ({
 }) => {
     return (
         <li>
-            <BentoContainer className="space-y-12 px-6 bg-gradient-to-tl from-[#f9f5ff] via-[#f0e7ff] to-[#e2d9ff] shadow-md transition h-[10rem] hover:border-2 hover:border-purple-200 flex flex-col justify-between">
+            <BentoContainer className="space-y-12 px-6 bg-gradient-to-tl from-[#f9f5ff] via-[#f0e7ff] to-[#e2d9ff] shadow-md transition h-full hover:border-2 hover:border-purple-200 flex flex-col justify-between">
                 <header>
                     <div className="flex items-center justify-between">
                         <SubTitle>{formatDateForRender(item.text)}</SubTitle>

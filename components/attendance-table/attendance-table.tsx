@@ -12,7 +12,7 @@ export interface Columns {
     id: string;
     partner_id: string | number;
     email_address: string;
-    department: string;
+    section: string;
     checkIn: string;
     check_out: string;
 }
@@ -31,8 +31,8 @@ const columns: ColumnDef<Columns>[] = [
         header: "Email Address",
     },
     {
-        accessorKey: "department",
-        header: "Department",
+        accessorKey: "section",
+        header: "Section",
     },
     {
         accessorKey: "checkIn",
@@ -48,18 +48,24 @@ const columns: ColumnDef<Columns>[] = [
 
 interface AttendanceTableProps {
     className?: string;
+    tableClassName?: string;
     date: string;
     data: Columns[];
+    withShareButton?: boolean;
 }
 
 const AttendanceTable: React.FC<AttendanceTableProps> = ({
     className,
+    tableClassName,
     date,
     data,
+    withShareButton,
 }) => {
     return (
-        <BentoContainer className={`${className} bg-background`}>
-            <header className="border-b pb-2">
+        <BentoContainer
+            className={`${className} flex flex-col h-full overflow-hidden bg-background`}
+        >
+            <header className="border-b pb-2 shrink-0">
                 <SubTitle>
                     {" "}
                     Record for day: {formatDateForRender(date)}{" "}
@@ -70,12 +76,13 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({
                 </Description>
             </header>
 
-            {/* 
-                THE CHILDREN OF THE DATA TABLE IS THE BUTTONS IN THE RIGHT SIDE FOR ADDITIONAL CONTROLS  
-                THE BUTTONS CAN NOT DIRECTLY INTERACT WITH THE DATATABLE BUT THROUGH THE DATA STATE PROPS
-            */}
-            <DataTable className={className} data={data} columns={columns}>
-                <ShareButton />
+            <DataTable
+                className="flex-1 min-h-0"
+                tableClassName={tableClassName}
+                data={data}
+                columns={columns}
+            >
+                {withShareButton && <ShareButton />}
             </DataTable>
         </BentoContainer>
     );
