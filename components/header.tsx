@@ -148,17 +148,17 @@ const MobileHeaderContent = () => {
                         <nav>
                             <ul className="flex flex-col gap-2 font-medium text-sm">
                                 {navs.map((nav) => (
-                                    <li
-                                        key={nav.href}
-                                        className="
-                                        flex items-center gap-2 text-muted-foreground px-2.5 py-2 rounded-md
-                                        hover:bg-accent hover:text-muted-foreground hover:cursor-pointer hover:pl-4
-                                        transition-all
-                                    "
-                                    >
+                                    <li key={nav.href}>
                                         <Link
                                             href={nav.href}
-                                            className="flex items-center gap-2"
+                                            className="
+                                                flex items-center gap-2 text-muted-foreground px-2.5 py-2 rounded-md
+                                                hover:bg-accent hover:text-muted-foreground hover:cursor-pointer hover:pl-4
+                                                transition-all
+                                            "
+                                            onNavigate={() => {
+                                                setSheetOpen(false);
+                                            }}
                                         >
                                             {nav.icon} {nav.label}
                                         </Link>
