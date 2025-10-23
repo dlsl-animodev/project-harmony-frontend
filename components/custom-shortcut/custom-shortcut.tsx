@@ -15,10 +15,12 @@ import { Button } from "../ui/button";
 import React, { useState } from "react";
 
 import { Dispatch, SetStateAction } from "react";
+import { useSidebarOpen } from "@/context/sidebar-open-context";
 
 // Used by the items in the custom shortcut dropdown menu
 export interface DropdownCustomItemProps {
     setDropdownOpen: Dispatch<SetStateAction<boolean>>;
+   setSidebarOpen : (open: boolean) => void;
 }
 
 interface CustomShortcutProps {
@@ -32,6 +34,9 @@ const CustomShortcut: React.FC<CustomShortcutProps> = ({
     variant,
     className,
 }) => {
+    // sidebar open handler
+    const { setSidebarOpen } = useSidebarOpen();
+
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     return (
@@ -48,8 +53,8 @@ const CustomShortcut: React.FC<CustomShortcutProps> = ({
             <DropdownMenuContent>
                 <DropdownMenuLabel>Custom Shortcuts</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownStudentOnDateItem setDropdownOpen={setDropdownOpen} />
-                <DropdownDateRangeItem setDropdownOpen={setDropdownOpen} />
+                <DropdownStudentOnDateItem setDropdownOpen={setDropdownOpen} setSidebarOpen={setSidebarOpen} />
+                <DropdownDateRangeItem setDropdownOpen={setDropdownOpen} setSidebarOpen={setSidebarOpen} />
             </DropdownMenuContent>
         </DropdownMenu>
     );

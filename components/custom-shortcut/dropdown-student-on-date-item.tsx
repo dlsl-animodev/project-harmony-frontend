@@ -39,6 +39,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
+
 const formSchema = z.object({
     studentId: z.string().min(1, "Student ID is required"),
     date: z.date({ error: "Date is required" }),
@@ -46,6 +47,7 @@ const formSchema = z.object({
 
 const DropdownStudentOnDateItem: React.FC<DropdownCustomItemProps> = ({
     setDropdownOpen,
+    setSidebarOpen,
 }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -65,6 +67,7 @@ const DropdownStudentOnDateItem: React.FC<DropdownCustomItemProps> = ({
             return;
         }
 
+        setSidebarOpen(false);
         setDropdownOpen(false);
         setDialogOpen(false);
 
