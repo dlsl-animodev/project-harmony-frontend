@@ -13,7 +13,10 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { BentoContainer } from "@/components/bento-container";
+import {
+    BentoContainer,
+    BentoContainerHeader,
+} from "@/components/bento-container";
 import { Description, SubTitle, Title } from "@/components/texts";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import NoDataMessage from "@/components/no-data-message";
@@ -40,7 +43,7 @@ const StudentOnDatePage: React.FC<StudentOnDatePageProps> = async ({
     const data = await fetchJSON<AttendanceRecordResponse>(route);
 
     // error data
-    if (!data.success) return <NoDataMessage />
+    if (!data.success) return <NoDataMessage />;
 
     // success but no data
     if (!data.data || data.data.length === 0) {
@@ -57,7 +60,7 @@ const StudentOnDatePage: React.FC<StudentOnDatePageProps> = async ({
                     </Description>
                 </div>
             </div>
-        )
+        );
     }
 
     const student = [
@@ -91,26 +94,27 @@ const StudentOnDatePage: React.FC<StudentOnDatePageProps> = async ({
     });
 
     return (
-        <div className="flex flex-col h-full w-full space-y-8">
-            <div>
+        <BentoContainer className="flex flex-col h-full w-full space-y-8 bg-transparent border-none">
+            <BentoContainerHeader>
                 <Title>
                     Student Record for {studentId} on{" "}
                     {formatDateForRender(date)}
                 </Title>
                 <Description>
-                    If data is missing, it means the student did not check in or out
-                    on that date. Refresh the page if you believe this is an error.
+                    If data is missing, it means the student did not check in or
+                    out on that date. Refresh the page if you believe this is an
+                    error.
                 </Description>
-            </div>
+            </BentoContainerHeader>
 
             {/* STUDENT PROFILE */}
-            <section className="grid grid-cols-3 gap-4">
+            <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {student.map(({ value, label }) => (
                     <BentoContainer
                         key={label}
-                        className="space-y-12 px-6 bg-gradient-to-tl from-[#f9f5ff] via-[#f0e7ff] to-[#e2d9ff] shadow-md transition h-[10rem] hover:border-2 hover:border-purple-200 flex flex-col justify-between"
+                        className="bg-gradient-to-tl from-[#f9f5ff] via-[#f0e7ff] to-[#e2d9ff] shadow-md transition h-fit sm:h-[10rem] hover:border-2 hover:border-purple-200 flex gap-10 sm:gap-0 sm:flex-col justify-between"
                     >
-                        <SubTitle>{value}</SubTitle>
+                        <SubTitle className="wrap-anywhere">{value}</SubTitle>
                         <Description>{label}</Description>
                     </BentoContainer>
                 ))}
@@ -140,7 +144,7 @@ const StudentOnDatePage: React.FC<StudentOnDatePageProps> = async ({
                     </Table>
                 </ScrollArea>
             </div>
-        </div>
+        </BentoContainer>
     );
 };
 
