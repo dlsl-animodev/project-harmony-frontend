@@ -6,14 +6,14 @@ import {
     formatDateForRender,
     groupDateRangeByDay,
 } from "@/lib/utils";
-import Loader from "@/components/loader";
-import NoDataMessage from "../no-data-message";
+import Loader from "@/components/reusables/loader";
+import NoDataMessage from "../reusables/no-data-message";
 import AttendanceTable from "../attendance-table/attendance-table";
 import { ScrollArea } from "../ui/scroll-area";
-import { BentoContainer, BentoContainerHeader } from "../bento-container";
+import { BentoContainer, BentoContainerHeader } from "../reusables/bento-container";
 import { AttendanceRecord, AttendanceRecordResponse } from "@/lib/types";
-import { Description, Title } from "../texts";
-import AlertMessage from "../alert-message";
+import { Description, Title } from "../reusables/texts";
+import AlertMessage from "../reusables/alert-message";
 import ShareButton from "../attendance-table/share-button";
 
 interface RangeAttendanceTableProps {

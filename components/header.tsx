@@ -16,7 +16,7 @@ import {
 import { useIsTablet } from "@/hooks/use-tablet";
 import { useState } from "react";
 import { useMemo } from "react";
-import DatePicker from "./date-picker";
+import DatePicker from "./ui/date-picker";
 import { useRouter } from "next/navigation";
 import { formatDateAsYYYYMMDD } from "@/lib/utils";
 import { useSidebarOpen } from "@/context/sidebar-open-context";

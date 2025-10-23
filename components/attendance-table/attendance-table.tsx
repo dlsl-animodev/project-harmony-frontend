@@ -2,8 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/data-table";
-import { BentoContainer } from "../bento-container";
-import { Description, SubTitle } from "../texts";
+import { BentoContainer } from "../reusables/bento-container";
+import { Description, SubTitle } from "../reusables/texts";
 import React from "react";
 import ShareButton from "./share-button";
 import { formatDateForRender, formatTimeForRender } from "@/lib/utils";

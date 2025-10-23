@@ -1,6 +1,6 @@
 import { fetchJSON, formatDatesWithIndexAsId } from "@/lib/utils";
 import DaysSidebar from "./days-sidebar";
-import NoDataMessage from "../no-data-message";
+import NoDataMessage from "../reusables/no-data-message";
 import { AvailableDatesResponse } from "@/lib/types";
 
 

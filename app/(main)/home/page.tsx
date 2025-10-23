@@ -3,8 +3,8 @@
 import {
     BentoContainer,
     BentoContainerHeader,
-} from "@/components/bento-container";
-import { Description, Title } from "@/components/texts";
+} from "@/components/reusables/bento-container";
+import { Description, Title } from "@/components/reusables/texts";
 import { useDates } from "@/context/dates-context";
 import {
     DayCards,
@@ -13,7 +13,7 @@ import {
 } from "@/components/days/day-cards";
 import { groupDatesByMonth } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import AlertMessage from "@/components/alert-message";
+import AlertMessage from "@/components/reusables/alert-message";
 
 const HomePage = () => {
     const { dates } = useDates();

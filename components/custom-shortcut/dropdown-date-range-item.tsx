@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import DatePicker from "../date-picker";
+import DatePicker from "../ui/date-picker";
 import { Button } from "../ui/button";
 
 import { DropdownMenuItem } from "../ui/dropdown-menu";

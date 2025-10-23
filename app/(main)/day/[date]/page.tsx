@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import AttendanceTableServer from "@/components/attendance-table/attendance-table-server";
-import Loader from "@/components/loader";
+import Loader from "@/components/reusables/loader";
 
 interface SingleDayPageProps {
     // When a page component is async, Next.js may provide params as a thenable.
