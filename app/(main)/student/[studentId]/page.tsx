@@ -17,6 +17,7 @@ import { BentoContainer } from "@/components/bento-container";
 import { Description, SubTitle, Title } from "@/components/texts";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import NoDataMessage from "@/components/no-data-message";
+import AudioWave from "@/components/audio-wave";
 
 interface StudentOnDatePageProps {
     // params of the studentId
@@ -38,7 +39,26 @@ const StudentOnDatePage: React.FC<StudentOnDatePageProps> = async ({
 
     const data = await fetchJSON<AttendanceRecordResponse>(route);
 
+    // error data
     if (!data.success) return <NoDataMessage />
+
+    // success but no data
+    if (!data.data || data.data.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center h-full w-full bg-transparent ">
+                <AudioWave />
+                <div>
+                    <Title className="text-center">
+                        No Attendance Records for {studentId} on{" "}
+                        {formatDateForRender(date)}
+                    </Title>
+                    <Description className="text-center">
+                        The student did not check in or out on this date.
+                    </Description>
+                </div>
+            </div>
+        )
+    }
 
     const student = [
         {
