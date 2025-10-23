@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useMemo } from "react";
-import { Description, SubTitle } from "../texts";
-import { BentoContainer } from "../bento-container";
+import { Description, SubTitle } from "../reusables/texts";
+import { BentoContainer } from "../reusables/bento-container";
 import DaysSidebarItem from "./days-sidebar-item";
 import { Calendar } from "lucide-react";
 import { useDates } from "@/context/dates-context";

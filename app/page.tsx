@@ -1,7 +1,7 @@
-import { Description, Title } from "@/components/texts";
+import { Description, Title } from "@/components/reusables/texts";
 import { Button } from "@/components/ui/button";
 import { Book, Disc3 } from "lucide-react";
-import AudioWave from "../components/audio-wave";
+import AudioWave from "../components/reusables/audio-wave";
 import ANIMODEVLOGO from "@/public/animo-dev-logo.jpg";
 import Image from "next/image";
 import {

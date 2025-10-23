@@ -1,5 +1,5 @@
-import {BentoContainer} from "../bento-container";
-import { SubTitle, Description, SubHeading } from "../texts";
+import {BentoContainer} from "../reusables/bento-container";
+import { SubTitle, Description, SubHeading } from "../reusables/texts";
 import { ChevronRight, Sheet } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";

@@ -16,11 +16,11 @@ import {
 import {
     BentoContainer,
     BentoContainerHeader,
-} from "@/components/bento-container";
-import { Description, SubTitle, Title } from "@/components/texts";
+} from "@/components/reusables/bento-container";
+import { Description, SubTitle, Title } from "@/components/reusables/texts";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import NoDataMessage from "@/components/no-data-message";
-import AudioWave from "@/components/audio-wave";
+import NoDataMessage from "@/components/reusables/no-data-message";
+import AudioWave from "@/components/reusables/audio-wave";
 
 interface StudentOnDatePageProps {
     // params of the studentId

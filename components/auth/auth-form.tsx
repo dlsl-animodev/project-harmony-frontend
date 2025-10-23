@@ -18,8 +18,8 @@ import {
 
 import { Input } from "@/components/ui/input";
 
-import { Title, Description } from "../texts";
-import { BentoContainer } from "../bento-container";
+import { Title, Description } from "../reusables/texts";
+import { BentoContainer } from "../reusables/bento-container";
 
 const authSchema = z.object({
     email: z.string().min(1, "Email is required"),

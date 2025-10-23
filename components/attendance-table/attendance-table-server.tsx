@@ -1,9 +1,9 @@
 import { DateResponse } from "@/lib/types";
-import { BentoContainer } from "../bento-container";
-import { SubTitle, Description } from "../texts";
+import { BentoContainer } from "../reusables/bento-container";
+import { SubTitle, Description } from "../reusables/texts";
 import AttendanceTable from "./attendance-table";
 import { fetchJSON } from "@/lib/utils";
-import NoDataMessage from "../no-data-message";
+import NoDataMessage from "../reusables/no-data-message";
 
 interface AttendanceTableServerProps {
     className?: string;
