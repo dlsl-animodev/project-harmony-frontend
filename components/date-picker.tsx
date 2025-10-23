@@ -19,9 +19,10 @@ interface DatePickerProps  {
     setState: React.Dispatch<React.SetStateAction<Date | undefined>>;
     className? : string;
     onDateSelect? : (date: Date) => void;
+    children? : React.ReactNode;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ state, setState, className, onDateSelect }) => {
+const DatePicker: React.FC<DatePickerProps> = ({ state, setState, className, onDateSelect, children }) => {
     const [popoverOpen, setPopoverOpen] = useState(false);
 
     const isFutureDate = (date: Date) => {
@@ -46,7 +47,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ state, setState, className, onD
                 <Button
                     variant="outline"
                     data-empty={!state}
-                    className={twMerge(`data-[empty=true]:text-muted-foreground w-full  justify-start text-left font-normal mt-2 space-x-1 py-4.5`,className)}
+                    className={twMerge(`data-[empty=true]:text-muted-foreground w-full  justify-start text-left font-semibold mt-2 space-x-1 py-4.5`,className)}
                 >
                     <CalendarIcon  />
                     {state ? formatDateForRender(state.toLocaleDateString()) : <span className="font-medium">Pick a date</span>}
@@ -60,6 +61,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ state, setState, className, onD
                     disabled={(date) => isFutureDate(date)}
                     defaultMonth={state ?? new Date()}
                 />
+                {children && children}
             </PopoverContent>
         </Popover>
     );

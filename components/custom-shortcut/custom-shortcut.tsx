@@ -21,15 +21,29 @@ export interface DropdownCustomItemProps {
     setDropdownOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-type CustomShortcutProps = React.ComponentProps<typeof Button>
+interface CustomShortcutProps {
+    children?: React.ReactNode;
+    variant?: "default" | "link";
+    className?: string;
+}
 
-const CustomShortcut : React.FC<CustomShortcutProps> = (props) => {
+const CustomShortcut: React.FC<CustomShortcutProps> = ({
+    children,
+    variant,
+    className,
+}) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     return (
         <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
             <DropdownMenuTrigger asChild>
-                <Button {...props}>Custom</Button>
+                {children ? (
+                    <div className={className}>{children}</div>
+                ) : (
+                    <Button className={className} variant={variant}>
+                        Custom
+                    </Button>
+                )}
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>Custom Shortcuts</DropdownMenuLabel>
