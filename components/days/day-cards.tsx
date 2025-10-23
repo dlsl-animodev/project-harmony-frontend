@@ -45,7 +45,7 @@ const DayCardItem: React.FC<DayCardItemProps> = ({
 }) => {
     return (
         <li>
-            <BentoContainer className="space-y-12 px-6 bg-gradient-to-tl from-[#f9f5ff] via-[#f0e7ff] to-[#e2d9ff] shadow-md transition h-full hover:border-2 hover:border-purple-200 flex flex-col justify-between">
+            <BentoContainer className="space-y-6 sm:space-y-12 px-6 bg-gradient-to-tl from-[#f9f5ff] via-[#f0e7ff] to-[#e2d9ff] shadow-md transition h-full hover:border-2 hover:border-purple-200 flex flex-col justify-between">
                 <header>
                     <div className="flex items-center justify-between">
                         <SubTitle>{formatDateForRender(item.text)}</SubTitle>
@@ -64,13 +64,13 @@ const DayCardItem: React.FC<DayCardItemProps> = ({
                     </Description>
                 </header>
 
-                <main className="flex gap-2 items-center">
-                    <Link href={`/day/${item.text}`}>
-                        <Button variant="ghost" className="text-xs">
+                <main className="flex flex-wrap sm:flex-nowrap gap-2 items-center">
+                    <Link href={`/day/${item.text}`} className="w-full sm:w-auto">
+                        <Button variant="ghost" className="text-xs w-full sm:w-auto">
                             <Sheet /> View
                         </Button>
                     </Link>
-                    <ShareButton variant={"ghost"} date={item} fromHome={true} />
+                    <ShareButton variant={"ghost"} date={item} fromHome={true} className="w-full sm:w-fit" />
                 </main>
             </BentoContainer>
         </li>
