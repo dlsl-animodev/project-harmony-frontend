@@ -23,6 +23,7 @@ import { toast } from "sonner";
 
 const DropdownDateRangeItem: React.FC<DropdownCustomItemProps> = ({
     setDropdownOpen,
+    setSidebarOpen
 }) => {
     const [startDate, setStartDate] = useState<Date | undefined>(undefined);
     const [endDate, setEndDate] = useState<Date | undefined>(undefined);
@@ -35,6 +36,7 @@ const DropdownDateRangeItem: React.FC<DropdownCustomItemProps> = ({
             return;
         }
 
+        setSidebarOpen(false);
         setDropdownOpen(false);
 
         const formattedStartDate = formatDateAsYYYYMMDD(startDate);

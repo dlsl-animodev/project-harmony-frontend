@@ -19,6 +19,7 @@ import { useMemo } from "react";
 import DatePicker from "./date-picker";
 import { useRouter } from "next/navigation";
 import { formatDateAsYYYYMMDD } from "@/lib/utils";
+import { useSidebarOpen } from "@/context/sidebar-open-context";
 import CustomShortcut from "./custom-shortcut/custom-shortcut";
 
 const Header = () => {
@@ -86,7 +87,8 @@ const DesktopHeaderContent = () => {
 const ICON_SIZE = 19 as const;
 
 const MobileHeaderContent = () => {
-    const [sheetOpen, setSheetOpen] = useState(false);
+    const { sidebarOpen, setSidebarOpen } = useSidebarOpen();
+    
     const [date, setDate] = useState<Date | undefined>(undefined);
 
     const navs = useMemo(
@@ -105,7 +107,8 @@ const MobileHeaderContent = () => {
     const handleDateSelect = (d: Date) => {
         if (!d) return;
 
-        setSheetOpen(false);
+        setSidebarOpen(false);
+        
         const formattedDate = formatDateAsYYYYMMDD(d);
         router.push(`/day/${formattedDate}`);
     };
@@ -118,7 +121,7 @@ const MobileHeaderContent = () => {
                 </Link>
             </section>
 
-            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+            <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
                 <SheetTrigger asChild>
                     <Button className="z-20">
                         <Menu />
@@ -157,7 +160,7 @@ const MobileHeaderContent = () => {
                                                 transition-all
                                             "
                                             onNavigate={() => {
-                                                setSheetOpen(false);
+                                                setSidebarOpen(false);
                                             }}
                                         >
                                             {nav.icon} {nav.label}
