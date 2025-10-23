@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { Home, Menu, User } from "lucide-react";
+import { CalendarCog, Home, Menu, User } from "lucide-react";
 
 import {
     Sheet,
@@ -131,15 +131,19 @@ const MobileHeaderContent = () => {
                             Quickly navigate to different sections.
                         </SheetDescription>
                     </SheetHeader>
-                    <section className="border-t border-t-muted-foreground/20 pt-3">
-                        <div className="mb-3 w-fit flex items-center gap-1">
-                            <DatePicker
-                                state={date}
-                                setState={setDate}
-                                onDateSelect={handleDateSelect}
-                            />
-                            <CustomShortcut variant={"link"} className="mt-2" />
-                        </div>
+                    <section className="border-t border-t-muted-foreground/20 pt-3 space-y-2">
+                        <DatePicker
+                            state={date}
+                            setState={setDate}
+                            onDateSelect={handleDateSelect}
+                        >
+                            <CustomShortcut
+                                variant={"link"}
+                                className="flex text-blue-500 underline font-semibold hover:cursor-pointer items-center justify-center gap-2 px-2.5 py-2 w-full border text-sm"
+                            >
+                                <CalendarCog size={20} /> Custom date
+                            </CustomShortcut>
+                        </DatePicker>
 
                         <nav>
                             <ul className="flex flex-col gap-2 font-medium text-sm">
