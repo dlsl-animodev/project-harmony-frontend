@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { LoadingProvider } from "@/context/loading-context";
 import NextTopLoader from "nextjs-toploader";
+import ContentTransition from "../components/content-transition";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -30,9 +31,11 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <NextTopLoader />
-                <LoadingProvider>{children}</LoadingProvider>
-                <Toaster />
+                <ContentTransition>
+                    <NextTopLoader />
+                    <LoadingProvider>{children}</LoadingProvider>
+                    <Toaster />
+                </ContentTransition>
             </body>
         </html>
     );
