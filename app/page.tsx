@@ -1,14 +1,9 @@
-"use client";
-
 import { Description, Title } from "@/components/texts";
 import { Button } from "@/components/ui/button";
 import { Book, Disc3 } from "lucide-react";
 import AudioWave from "../components/audio-wave";
-import { Badge } from "@/components/ui/badge";
-import { useIsTablet } from "@/hooks/use-tablet";
 import ANIMODEVLOGO from "@/public/animo-dev-logo.jpg";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -18,21 +13,9 @@ import {
 import Link from "next/link";
 
 const LandingPage = () => {
-    const isTablet = useIsTablet();
-    const [discSize, setDiscSize] = useState<number>(45);
-
-    useEffect(() => {
-        if (isTablet) {
-            setDiscSize(30);
-        } else {
-            setDiscSize(45);
-        }
-    }, [isTablet]);
-
     return (
         <div className="h-full">
-            <main className="h-[calc(100vh-3rem)] p-10 relative ">
-                <AudioWave />
+            <main className="h-[calc(100vh-10vh)] lg:h-[calc(100vh-0rem)] py-5 px-10 md:px-14 relative">
                 {/* HERO SECTION  */}
                 <section className="flex flex-col justify-between h-full ">
                     <div className="flex justify-between">
@@ -50,14 +33,6 @@ const LandingPage = () => {
                                     musikalista logo{" "}
                                 </div>
                             </div>
-                            <p className="w-[120%] md:w-[100%] lg:w-[60%]  text-sm md:text-base lg:text-lg">
-                                Musikalista IoT-powered Room Tracker monitors
-                                every entry and exit in the Music Club Room,
-                                syncing data to this website&apos;s dashboard so
-                                club heads and members always know who is
-                                practicing, when the room&apos;s occupied, and
-                                who last used it, all without manual logs.
-                            </p>
                         </div>
                         <span className="flex gap-2 mt-2 lg:mt-0">
                             <Link href={"/signIn"}>
@@ -67,50 +42,53 @@ const LandingPage = () => {
                         </span>
                     </div>
 
-                    <div className="mt-20 md:mt-0 ">
-                        <Badge className="bg-gradient-to-r from-yellow-500 via-purple-500 to-pink-500">
-                            {" "}
-                            Developed and maintained by
-                            <Link href={"#"} className="underline">
-                                {" "}
-                                ANIMO.DEV
-                            </Link>{" "}
-                        </Badge>
-                        <Title className="text-5xl sm:text-6xl lg:text-7xl sm:w-[46rem] md:w-[50rem] lg:w-full mb-4 font-bold break-words">
+                    <div className="mt-20 md:mt-0 space-y-10">
+                        <div className="w-full flex items-center justify-center md:justify-start lg:justify-start mb-4">
+                            <div className="text-white flex items-center rounded-lg text-sm text-center gap-4 px-4 py-2 shadow-md bg-gradient-to-r from-yellow-500 via-purple-500 to-pink-500 font-bold border">
+                                <Disc3 className=" animate-spin size-8 md:size-5" />{" "}
+                                <span>
+                                    Developed and maintained by
+                                    <Link href={"#"} className="underline">
+                                        {" "}
+                                        ANIMO.DEV
+                                    </Link>{" "}
+                                </span>
+                                <Disc3 className=" animate-spin size-8 md:size-5" />{" "}
+                            </div>
+                        </div>
+                        <Title className="text-5xl sm:text-6xl lg:text-7xl mb-4 font-bold break-words text-center md:text-left">
                             Never
                             <span className="text-primary">
                                 {" "}
-                                L
-                                <Disc3
-                                    className="inline animate-spin"
-                                    size={discSize}
-                                />
-                                se Track{" "}
+                                Lose Track{" "}
                             </span>{" "}
-                            <br className="block md:hidden" />
                             of a Beat, <br className="hidden lg:block" /> or
-                            <span className="text-primary">
-                                {" "}
-                                Wh
-                                <Disc3
-                                    className="inline animate-spin"
-                                    size={discSize}
-                                />{" "}
-                                <br className="block md:hidden" />
-                                is{" "}
-                            </span>
+                            <span className="text-primary"> Who is </span>
                             in the
-                            <span className="text-primary"> Room</span>.
+                            <span className="text-primary"> Room.</span>{" "}
                         </Title>
-                        <Description className="text-sm  md:text-xl lg:text-2xl font-medium mb-14">
+                        <Description className="text-sm  md:text-xl lg:text-2xl font-medium text-center md:text-left">
                             The official website for the Iot-powered Musikalista
                             Room Tracker <br className="hidden md:block " />{" "}
                             that monitors check-ins and check-outs.
                         </Description>
+                        <Description className="text-xs md:text-sm lg:text-base text-center md:text-left">
+                            Musikalista IoT-powered Room Tracker monitors every
+                            entry and exit in the Music Club Room,{" "}
+                            <br className="hidden md:block " /> syncing data to
+                            this website&apos;s dashboard so club heads and
+                            members always know who is practicing,{" "}
+                            <br className="hidden md:block " /> when the
+                            room&apos;s occupied, and who last used it, all
+                            without manual logs.
+                        </Description>
 
-                        <Link href={"/home"}>
-                            <Button> Get started </Button>
-                        </Link>
+                        <div className="flex items-center justify-between">
+                            <Link href={"/home"}>
+                                <Button> Get started </Button>
+                            </Link>
+                            <AudioWave />
+                        </div>
                     </div>
                 </section>
             </main>
