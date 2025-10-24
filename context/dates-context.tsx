@@ -4,14 +4,14 @@ import { DateType } from "@/lib/types";
 import { createContext, useContext, useState, ReactNode } from "react";
 
 type DatesContextType = {
-    dates : DateType[];
+    dates : DateType[] | null;
     setDates: (dates: DateType[]) => void;
 };
 
 const DatesContext = createContext<DatesContextType | undefined>(undefined);
 
 export const DatesProvider = ({ children }: { children: ReactNode }) => {
-    const [dates, setDates] = useState<DateType[]>([]);
+    const [dates, setDates] = useState<DateType[] | null>(null);
 
     return (
         <DatesContext.Provider value={{ dates, setDates }}>
