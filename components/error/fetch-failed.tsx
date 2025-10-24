@@ -1,6 +1,5 @@
 "use client";
 
-import { Frown } from "lucide-react";
 import {
     BentoContainer,
     BentoContainerHeader,
@@ -10,10 +9,12 @@ import { Description, Title } from "../reusables/texts";
 import { Button } from "../ui/button";
 import { ErrorBoundaryProps } from "@/lib/error-types";
 import { useRouter } from "next/navigation";
+import AnimoDevBadge from "../reusables/animo-dev-badge";
 
 // extend the error boundary props to have the className
 interface FetchFailedProps extends ErrorBoundaryProps {
     className?: string;
+    showMessage?: boolean;
 }
 
 const FetchFailed: React.FC<FetchFailedProps> = ({
@@ -26,16 +27,19 @@ const FetchFailed: React.FC<FetchFailedProps> = ({
     return (
         <div
             className={twMerge(
-                `flex flex-col items-center justify-center h-full`,
+                `flex flex-col items-center justify-center h-[100dvh]`,
                 className
             )}
         >
             <BentoContainer className="bg-transparent space-y-4 flex flex-col items-center border-none">
+                <AnimoDevBadge />
                 <BentoContainerHeader className="text-center">
-                    <Title className="inline-flex items-end gap-2">
-                        Something went wrong <Frown />
+                    <Title>
+                        Something went wrong: {error.name}
                     </Title>
-                    <Description>{error.message}</Description>
+                    <Description>
+                        Unexpected error. Try again or contact support
+                    </Description>
                 </BentoContainerHeader>
                 <Button
                     onClick={() => {
