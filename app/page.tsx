@@ -16,7 +16,7 @@ import AnimoDevBadge from "@/components/reusables/animo-dev-badge";
 const LandingPage = () => {
     return (
         <div className="h-full">
-            <main className="h-[calc(100vh-10vh)] lg:h-[calc(100vh-0rem)] py-5 px-10 md:px-14 relative">
+            <main className="h-[100dvh] py-5 px-10 md:px-14 relative">
                 {/* HERO SECTION  */}
                 <section className="flex flex-col justify-between h-full ">
                     <div className="flex justify-between">

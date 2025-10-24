@@ -17,7 +17,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     return (
         <LoadingProvider>
             <SidebarOpenProvider>
-                <div className="flex flex-col h-screen overflow-hidden">
+                <div className="flex flex-col h-[100dvh] overflow-hidden">
                     <NextTopLoader />
                     <Header />
                     <main className="flex-1 overflow-y-auto flex flex-col lg:flex-row gap-4 lg:p-8">
