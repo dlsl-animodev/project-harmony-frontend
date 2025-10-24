@@ -16,6 +16,8 @@ import { AttendanceRecord, AttendanceRecordResponse } from "@/lib/types";
 import { Description, Title } from "../reusables/texts";
 import AlertMessage from "../reusables/alert-message";
 import ShareButton from "../attendance-table/share-button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { twMerge } from "tailwind-merge";
 
 interface RangeAttendanceTableProps {
     startDate: string;
@@ -87,52 +89,46 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
     );
 
     return (
-        <div
-            className={`w-full h-full overflow-y-auto ${className}`}
+        <BentoContainer
+            className={twMerge(
+                `border-none bg-background space-y-8 w-full h-full overflow-y-auto`,
+                className
+            )}
         >
-            <BentoContainer className="border-none bg-background space-y-8 w-full h-full">
-                <BentoContainerHeader className="flex items-center justify-between">
-                    <div>
-                        <Title>
-                            Attendance Records from{" "}
-                            {formatDateForRender(startDate)} to{" "}
-                            {formatDateForRender(endDate)}
-                        </Title>
-                        <Description>
-                            Click the custom button again to change the date
-                            range.
-                        </Description>
-                    </div>
-                    <ShareButton fromRange={true}>
-                        Share Record Range
-                    </ShareButton>
-                </BentoContainerHeader>
+            <BentoContainerHeader className="flex items-center justify-between gap-10">
+                <div>
+                    <Title>
+                        Attendance Records from {formatDateForRender(startDate)}{" "}
+                        to {formatDateForRender(endDate)}
+                    </Title>
+                    <Description>
+                        Click the custom button again to change the date range.
+                    </Description>
+                </div>
+                <ShareButton fromRange={true}>Share Record Range</ShareButton>
+            </BentoContainerHeader>
 
-                <AlertMessage title="If you do not see any records for certain dates, it may be because there were no attendance records for those dates." />
+            <AlertMessage title="If you do not see any records for certain dates, it may be because there were no attendance records for those dates." />
 
-                {data.data.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center w-full">
-                        <Title>No Attendance Records Found</Title>
-                        <Description>
-                            There are no attendance records for the selected
-                            date range.
-                        </Description>
-                    </div>
-                ) : (
-                    Object.entries(formattedDates).map(([date, records]) => (
-                        <div key={date} className="mb-8">
-                            <AttendanceTable
-                                date={date}
-                                data={records}
-                                className={className}
-                                tableClassName="h-fit"
-                                withShareButton={false}
-                            />
-                        </div>
-                    ))
-                )}
-            </BentoContainer>
-        </div>
+            <Tabs defaultValue={Object.keys(formattedDates)[0]}>
+                <TabsList className="mb-4 overflow-x-auto">
+                    {Object.keys(formattedDates).map((date) => (
+                        <TabsTrigger
+                            key={date}
+                            value={date}
+                            className="whitespace-nowrap"
+                        >
+                            {formatDateForRender(date)}
+                        </TabsTrigger>
+                    ))}
+                </TabsList>
+                {Object.entries(formattedDates).map(([date, records]) => (
+                    <TabsContent key={date} value={date}>
+                        <AttendanceTable date={date} data={records} />
+                    </TabsContent>
+                ))}
+            </Tabs>
+        </BentoContainer>
     );
 };
 
