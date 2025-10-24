@@ -95,7 +95,7 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
                 className
             )}
         >
-            <BentoContainerHeader className="flex items-center justify-between gap-10">
+            <BentoContainerHeader className="flex flex-wrap md:flex-nowrap gap-4 items-center justify-between md:gap-10">
                 <div>
                     <Title>
                         Attendance Records from {formatDateForRender(startDate)}{" "}
