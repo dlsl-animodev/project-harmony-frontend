@@ -7,10 +7,12 @@ import {
     groupDateRangeByDay,
 } from "@/lib/utils";
 import Loader from "@/components/reusables/loader";
-import NoDataMessage from "../reusables/no-data-message";
 import AttendanceTable from "../attendance-table/attendance-table";
 import { ScrollArea } from "../ui/scroll-area";
-import { BentoContainer, BentoContainerHeader } from "../reusables/bento-container";
+import {
+    BentoContainer,
+    BentoContainerHeader,
+} from "../reusables/bento-container";
 import { AttendanceRecord, AttendanceRecordResponse } from "@/lib/types";
 import { Description, Title } from "../reusables/texts";
 import AlertMessage from "../reusables/alert-message";
@@ -62,8 +64,11 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
         );
     }
 
-    if (!data || !data.data || data.data.length === 0) {
-        return <NoDataMessage />;
+    if (!data?.success) {
+        throw new Error(
+            data?.message ||
+                "Failed to fetch attendance data for the date range."
+        );
     }
 
     const groupedDates = groupDateRangeByDay(data!.data);
@@ -100,22 +105,34 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
                             range.
                         </Description>
                     </div>
-                    <ShareButton fromRange={true}>Share Record Range</ShareButton>
+                    <ShareButton fromRange={true}>
+                        Share Record Range
+                    </ShareButton>
                 </BentoContainerHeader>
 
                 <AlertMessage title="If you do not see any records for certain dates, it may be because there were no attendance records for those dates." />
 
-                {Object.entries(formattedDates).map(([date, records]) => (
-                    <div key={date} className="mb-8">
-                        <AttendanceTable
-                            date={date}
-                            data={records}
-                            className={className}
-                            tableClassName="h-fit"
-                            withShareButton={false}
-                        />
+                {data.data.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center w-full">
+                        <Title>No Attendance Records Found</Title>
+                        <Description>
+                            There are no attendance records for the selected
+                            date range.
+                        </Description>
                     </div>
-                ))}
+                ) : (
+                    Object.entries(formattedDates).map(([date, records]) => (
+                        <div key={date} className="mb-8">
+                            <AttendanceTable
+                                date={date}
+                                data={records}
+                                className={className}
+                                tableClassName="h-fit"
+                                withShareButton={false}
+                            />
+                        </div>
+                    ))
+                )}
             </BentoContainer>
         </ScrollArea>
     );

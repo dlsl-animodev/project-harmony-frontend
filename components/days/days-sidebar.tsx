@@ -72,11 +72,16 @@ const DaysSidebar: React.FC<DaysSidebarProps> = ({
                         type="always"
                     >
                         <ul className="text-sm">
-                            {datesMemo.map((date) => (
-                                <DaysSidebarItem
-                                    key={date.id}
-                                    date={date}
-                                    className={`
+                            {datesMemo.length === 0 ? (
+                                <Description className="p-2">
+                                    No available dates yet.
+                                </Description>
+                            ) : (
+                                datesMemo.map((date) => (
+                                    <DaysSidebarItem
+                                        key={date.id}
+                                        date={date}
+                                        className={`
                                         text-white font-medium p-2 rounded-md mr-2 my-1
                                         hover:bg-accent hover:text-muted-foreground hover:cursor-pointer hover:pl-4
                                         transition-all
@@ -85,8 +90,9 @@ const DaysSidebar: React.FC<DaysSidebarProps> = ({
                                                 ? "bg-accent text-primary hover:text-primary pl-4"
                                                 : ""
                                         }`}
-                                />
-                            ))}
+                                    />
+                                ))
+                            )}
                         </ul>
                     </ScrollArea>
                 </nav>

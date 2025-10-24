@@ -47,6 +47,8 @@ export interface AvailableDatesResponse {
   count: number;
   dates: string[];
   timestamp : string;
+  error? : string;
+  message? : string;
 }
 
 export interface AttendanceRecord {
@@ -77,6 +79,7 @@ export interface DateResponse {
   message : string;
   data : SheetsGetResponse;
   timestamp : string;
+  error? : string;
 }
 
 export interface ExternalApiResponse {
