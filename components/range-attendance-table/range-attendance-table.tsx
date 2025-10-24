@@ -15,7 +15,6 @@ import {
 import { AttendanceRecord, AttendanceRecordResponse } from "@/lib/types";
 import { Description, Title } from "../reusables/texts";
 import AlertMessage from "../reusables/alert-message";
-import ShareButton from "../attendance-table/share-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { twMerge } from "tailwind-merge";
 
@@ -95,17 +94,14 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
                 className
             )}
         >
-            <BentoContainerHeader className="flex flex-wrap md:flex-nowrap gap-4 items-center justify-between md:gap-10">
-                <div>
-                    <Title>
-                        Attendance Records from {formatDateForRender(startDate)}{" "}
-                        to {formatDateForRender(endDate)}
-                    </Title>
-                    <Description>
-                        Click the custom button again to change the date range.
-                    </Description>
-                </div>
-                <ShareButton fromRange={true}>Share Record Range</ShareButton>
+            <BentoContainerHeader>
+                <Title>
+                    Attendance Records from {formatDateForRender(startDate)} to{" "}
+                    {formatDateForRender(endDate)}
+                </Title>
+                <Description>
+                    Click the custom button again to change the date range.
+                </Description>
             </BentoContainerHeader>
 
             <AlertMessage title="If you do not see any records for certain dates, it may be because there were no attendance records for those dates." />
