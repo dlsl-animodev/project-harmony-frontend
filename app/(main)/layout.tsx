@@ -6,8 +6,7 @@ import DaysSidebarServer from "@/components/days/days-sidebar-server";
 import { Toaster } from "sonner";
 import NextTopLoader from "nextjs-toploader";
 import React, { Suspense } from "react";
-
-import MainLayoutLoader from "@/components/main-layout-loader";
+import DaysSidebarLoader from "@/components/days/days-sidebar-loader";
 
 export const dynamic = "force-dynamic";
 
@@ -24,14 +23,14 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                     <Header />
 
                     <main className="flex-1 overflow-y-auto flex flex-col lg:flex-row gap-4 lg:p-8">
-                        <Suspense fallback={<MainLayoutLoader />}>
-                            <DatesProvider>
+                        <DatesProvider>
+                            <Suspense fallback={<DaysSidebarLoader />}>
                                 <DaysSidebarServer className="lg:basis-[20%] shrink-0" />
-                                <section className="flex-1 flex flex-col">
-                                    {children}
-                                </section>
-                            </DatesProvider>
-                        </Suspense>
+                            </Suspense>
+                            <section className="flex-1 flex flex-col">
+                                {children}
+                            </section>
+                        </DatesProvider>
                     </main>
                     <Toaster />
                 </div>
