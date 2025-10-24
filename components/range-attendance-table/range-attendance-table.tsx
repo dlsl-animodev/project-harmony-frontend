@@ -38,7 +38,7 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
 
         const fetchData = async () => {
             setLoading(true);
-            const route = `${process.env.NEXT_PUBLIC_BASE_URL}/api/reports/range?start=${startDate}&end=${endDate}`;
+            const route = `/api/reports/range?start=${startDate}&end=${endDate}`;
             const res = await fetchJSON<AttendanceRecordResponse>(route);
 
             if (isMounted) {
