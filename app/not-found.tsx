@@ -7,7 +7,7 @@ import AnimoDevBadge from "@/components/reusables/animo-dev-badge";
 
 const NotFoundPage = () => {
     return (
-        <div className="flex flex-col gap-[6rem] items-center justify-center h-screen">
+        <div className="flex flex-col gap-[6rem] items-center justify-center h-[100dvh]">
             <header className="flex flex-col items-center">
                 <p className="font-bold text-lg mb-4 text-primary">
                     Project Harmony
