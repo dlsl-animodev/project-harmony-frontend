@@ -20,7 +20,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 <div className="flex flex-col h-[100dvh] overflow-hidden">
                     <NextTopLoader />
                     <Header />
-                    <main className="flex-1 overflow-y-auto flex gap-4 lg:p-8">
+                    <main className="flex-1 overflow-y-auto flex flex-col lg:flex-row gap-4 lg:p-8">
                         <DatesProvider>
                             <DaysSidebarServer className="lg:basis-[20%] shrink-0" />
                             <section className="flex-1 flex flex-col">
