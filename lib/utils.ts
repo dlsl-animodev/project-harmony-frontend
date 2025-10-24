@@ -88,10 +88,5 @@ export async function fetchJSON<T>(
     options?: RequestInit
 ): Promise<T> {
     const res = await fetch(url, options);
-    if (!res.ok)
-        return {
-            error: `An error occurred: ${res.status} ${res.statusText}`,
-        } as unknown as T;
-
     return res.json() as Promise<T>;
 }
