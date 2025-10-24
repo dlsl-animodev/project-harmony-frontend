@@ -3,7 +3,7 @@ import { Description, Title } from "@/components/reusables/texts";
 import { Frown } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Disc3 } from "lucide-react";
+import AnimoDevBadge from "@/components/reusables/animo-dev-badge";
 
 const NotFoundPage = () => {
     return (
@@ -12,17 +12,7 @@ const NotFoundPage = () => {
                 <p className="font-bold text-lg mb-4 text-primary">
                     Project Harmony
                 </p>
-                <div className="text-white flex items-center rounded-lg text-sm text-center gap-4 px-4 py-2 shadow-md bg-gradient-to-r from-yellow-500 via-purple-500 to-pink-500 font-bold border">
-                    <Disc3 className=" animate-spin size-8 md:size-5" />{" "}
-                    <span>
-                        Developed and maintained by
-                        <Link href={"#"} className="underline">
-                            {" "}
-                            ANIMO.DEV
-                        </Link>{" "}
-                    </span>
-                    <Disc3 className=" animate-spin size-8 md:size-5" />{" "}
-                </div>
+                <AnimoDevBadge />
             </header>
 
             <main className="flex flex-col items-center">
@@ -31,7 +21,7 @@ const NotFoundPage = () => {
                     404 - Page Not Found <Frown />{" "}
                 </Title>
                 <Description>
-                    The page you’re looking for doesn’t exist.
+                    The page you are looking for does not exist.
                 </Description>
             </main>
 

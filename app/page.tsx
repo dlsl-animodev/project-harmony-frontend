@@ -1,6 +1,6 @@
 import { Description, Title } from "@/components/reusables/texts";
 import { Button } from "@/components/ui/button";
-import { Book, Disc3 } from "lucide-react";
+import { Book } from "lucide-react";
 import AudioWave from "../components/reusables/audio-wave";
 import ANIMODEVLOGO from "@/public/animo-dev-logo.jpg";
 import Image from "next/image";
@@ -11,6 +11,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import AnimoDevBadge from "@/components/reusables/animo-dev-badge";
 
 const LandingPage = () => {
     return (
@@ -44,17 +45,7 @@ const LandingPage = () => {
 
                     <div className="mt-20 md:mt-0 space-y-10">
                         <div className="w-full flex items-center justify-center md:justify-start lg:justify-start mb-4">
-                            <div className="text-white flex items-center rounded-lg text-sm text-center gap-4 px-4 py-2 shadow-md bg-gradient-to-r from-yellow-500 via-purple-500 to-pink-500 font-bold border">
-                                <Disc3 className=" animate-spin size-8 md:size-5" />{" "}
-                                <span>
-                                    Developed and maintained by
-                                    <Link href={"#"} className="underline">
-                                        {" "}
-                                        ANIMO.DEV
-                                    </Link>{" "}
-                                </span>
-                                <Disc3 className=" animate-spin size-8 md:size-5" />{" "}
-                            </div>
+                            <AnimoDevBadge />
                         </div>
                         <Title className="text-5xl sm:text-6xl lg:text-7xl mb-4 font-bold break-words text-center md:text-left">
                             Never
