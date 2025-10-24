@@ -33,7 +33,7 @@ const Header = () => {
     return (
         <header
             className="
-                relative overflow-hidden
+                shrink-0 sticky top-0 overflow-hidden
                 h-12 shadow-md border-b z-50
                 flex items-center justify-between 
                 px-[1rem] lg:px-[2rem] rounded-lg
@@ -88,7 +88,7 @@ const ICON_SIZE = 19 as const;
 
 const MobileHeaderContent = () => {
     const { sidebarOpen, setSidebarOpen } = useSidebarOpen();
-    
+
     const [date, setDate] = useState<Date | undefined>(undefined);
 
     const navs = useMemo(
@@ -108,7 +108,7 @@ const MobileHeaderContent = () => {
         if (!d) return;
 
         setSidebarOpen(false);
-        
+
         const formattedDate = formatDateAsYYYYMMDD(d);
         router.push(`/day/${formattedDate}`);
     };

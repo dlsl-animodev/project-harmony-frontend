@@ -1,36 +1,37 @@
 import { LoadingProvider } from "@/context/loading-context";
-import Header from "@/components/header";
-import { Toaster } from "sonner";
-import React from "react";
-import DaysSidebarServer from "@/components/days/days-sidebar-server";
-import NextTopLoader from "nextjs-toploader";
-import { DatesProvider } from "@/context/dates-context";
 import { SidebarOpenProvider } from "@/context/sidebar-open-context";
+import { DatesProvider } from "@/context/dates-context";
+import Header from "@/components/header";
+import DaysSidebarServer from "@/components/days/days-sidebar-server";
+import { Toaster } from "sonner";
+import NextTopLoader from "nextjs-toploader";
+import React from "react";
 
 export const dynamic = "force-dynamic";
 
 interface MainLayoutProps {
     children: React.ReactNode;
 }
+
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     return (
-        <div>
-            <NextTopLoader />
-            <LoadingProvider>
-                <SidebarOpenProvider>
+        <LoadingProvider>
+            <SidebarOpenProvider>
+                <div className="flex flex-col h-screen overflow-hidden">
+                    <NextTopLoader />
                     <Header />
-                    <main className="w-full h-[calc(100vh-3rem)] lg:p-8 flex flex-col lg:flex-row items-stretch gap-4">
+                    <main className="flex-1 overflow-y-auto flex flex-col lg:flex-row gap-4 lg:p-8">
                         <DatesProvider>
-                            <DaysSidebarServer className="lg:basis-[20%] lg:shrink-0 lg:grow-0" />
-                            <section className="flex-1 flex flex-col ">
+                            <DaysSidebarServer className="lg:basis-[20%] shrink-0" />
+                            <section className="flex-1 flex flex-col">
                                 {children}
                             </section>
                         </DatesProvider>
-                        <Toaster />
                     </main>
-                </SidebarOpenProvider>
-            </LoadingProvider>
-        </div>
+                    <Toaster />
+                </div>
+            </SidebarOpenProvider>
+        </LoadingProvider>
     );
 };
 
