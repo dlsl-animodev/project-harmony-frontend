@@ -1,33 +1,41 @@
 import { LoadingProvider } from "@/context/loading-context";
-import Header from "@/components/header";
-import { Toaster } from "sonner";
-import React from "react";
-import DaysSidebarServer from "@/components/days/days-sidebar-server";
-import NextTopLoader from "nextjs-toploader";
+import { SidebarOpenProvider } from "@/context/sidebar-open-context";
 import { DatesProvider } from "@/context/dates-context";
+import Header from "@/components/header";
+import DaysSidebarServer from "@/components/days/days-sidebar-server";
+import { Toaster } from "sonner";
+import NextTopLoader from "nextjs-toploader";
+import React, { Suspense } from "react";
+import DaysSidebarLoader from "@/components/days/days-sidebar-loader";
 
 export const dynamic = "force-dynamic";
 
 interface MainLayoutProps {
     children: React.ReactNode;
 }
+
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     return (
-        <div>
-            <NextTopLoader />
-            <LoadingProvider>
-                <Header />
-                <main className="w-full h-[calc(100vh-3rem)] lg:p-8 flex flex-col lg:flex-row items-stretch gap-4">
-                    <DatesProvider>
-                        <DaysSidebarServer className="lg:basis-[20%] lg:shrink-0 lg:grow-0" />
-                        <section className="flex-1 flex flex-col ">
-                            {children}
-                        </section>
-                    </DatesProvider>
+        <LoadingProvider>
+            <SidebarOpenProvider>
+                <div className="flex flex-col h-[100dvh] overflow-hidden">
+                    <NextTopLoader />
+                    <Header />
+
+                    <main className="flex-1 overflow-y-auto flex flex-col lg:flex-row gap-4 lg:p-8">
+                        <DatesProvider>
+                            <Suspense fallback={<DaysSidebarLoader />}>
+                                <DaysSidebarServer className="lg:basis-[20%] shrink-0" />
+                            </Suspense>
+                            <section className="flex-1 flex flex-col">
+                                {children}
+                            </section>
+                        </DatesProvider>
+                    </main>
                     <Toaster />
-                </main>
-            </LoadingProvider>
-        </div>
+                </div>
+            </SidebarOpenProvider>
+        </LoadingProvider>
     );
 };
 

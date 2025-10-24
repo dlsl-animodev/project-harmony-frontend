@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { Home, Menu, User } from "lucide-react";
+import { CalendarCog, Home, Menu, User } from "lucide-react";
 
 import {
     Sheet,
@@ -16,9 +16,10 @@ import {
 import { useIsTablet } from "@/hooks/use-tablet";
 import { useState } from "react";
 import { useMemo } from "react";
-import DatePicker from "./date-picker";
+import DatePicker from "./ui/date-picker";
 import { useRouter } from "next/navigation";
 import { formatDateAsYYYYMMDD } from "@/lib/utils";
+import { useSidebarOpen } from "@/context/sidebar-open-context";
 import CustomShortcut from "./custom-shortcut/custom-shortcut";
 
 const Header = () => {
@@ -32,7 +33,7 @@ const Header = () => {
     return (
         <header
             className="
-                relative overflow-hidden
+                shrink-0 sticky top-0 overflow-hidden
                 h-12 shadow-md border-b z-50
                 flex items-center justify-between 
                 px-[1rem] lg:px-[2rem] rounded-lg
@@ -86,7 +87,8 @@ const DesktopHeaderContent = () => {
 const ICON_SIZE = 19 as const;
 
 const MobileHeaderContent = () => {
-    const [sheetOpen, setSheetOpen] = useState(false);
+    const { sidebarOpen, setSidebarOpen } = useSidebarOpen();
+
     const [date, setDate] = useState<Date | undefined>(undefined);
 
     const navs = useMemo(
@@ -105,7 +107,8 @@ const MobileHeaderContent = () => {
     const handleDateSelect = (d: Date) => {
         if (!d) return;
 
-        setSheetOpen(false);
+        setSidebarOpen(false);
+
         const formattedDate = formatDateAsYYYYMMDD(d);
         router.push(`/day/${formattedDate}`);
     };
@@ -118,7 +121,7 @@ const MobileHeaderContent = () => {
                 </Link>
             </section>
 
-            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+            <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
                 <SheetTrigger asChild>
                     <Button className="z-20">
                         <Menu />
@@ -131,30 +134,34 @@ const MobileHeaderContent = () => {
                             Quickly navigate to different sections.
                         </SheetDescription>
                     </SheetHeader>
-                    <section className="border-t border-t-muted-foreground/20 pt-3">
-                        <div className="mb-3 w-fit flex items-center gap-1">
-                            <DatePicker
-                                state={date}
-                                setState={setDate}
-                                onDateSelect={handleDateSelect}
-                            />
-                            <CustomShortcut variant={"link"} className="mt-2" />
-                        </div>
+                    <section className="border-t border-t-muted-foreground/20 pt-3 space-y-2">
+                        <DatePicker
+                            state={date}
+                            setState={setDate}
+                            onDateSelect={handleDateSelect}
+                        >
+                            <CustomShortcut
+                                variant={"link"}
+                                className="flex text-blue-500 underline font-semibold hover:cursor-pointer items-center justify-center gap-2 px-2.5 py-2 w-full border text-sm"
+                            >
+                                <CalendarCog size={20} /> Custom date
+                            </CustomShortcut>
+                        </DatePicker>
 
                         <nav>
                             <ul className="flex flex-col gap-2 font-medium text-sm">
                                 {navs.map((nav) => (
-                                    <li
-                                        key={nav.href}
-                                        className="
-                                        flex items-center gap-2 text-muted-foreground px-2.5 py-2 rounded-md
-                                        hover:bg-accent hover:text-muted-foreground hover:cursor-pointer hover:pl-4
-                                        transition-all
-                                    "
-                                    >
+                                    <li key={nav.href}>
                                         <Link
                                             href={nav.href}
-                                            className="flex items-center gap-2"
+                                            className="
+                                                flex items-center gap-2 text-muted-foreground px-2.5 py-2 rounded-md
+                                                hover:bg-accent hover:text-muted-foreground hover:cursor-pointer hover:pl-4
+                                                transition-all
+                                            "
+                                            onNavigate={() => {
+                                                setSidebarOpen(false);
+                                            }}
                                         >
                                             {nav.icon} {nav.label}
                                         </Link>

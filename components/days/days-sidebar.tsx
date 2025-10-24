@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useMemo } from "react";
-import { Description, SubTitle } from "../texts";
-import { BentoContainer } from "../bento-container";
+import { Description, SubTitle } from "../reusables/texts";
+import { BentoContainer } from "../reusables/bento-container";
 import DaysSidebarItem from "./days-sidebar-item";
 import { Calendar } from "lucide-react";
 import { useDates } from "@/context/dates-context";
@@ -24,7 +24,7 @@ const DaysSidebar: React.FC<DaysSidebarProps> = ({
 }) => {
     const isTablet = useIsTablet();
 
-    const { dates, setDates } = useDates();
+    const { setDates } = useDates();
 
     useEffect(() => {
         setDates(formattedDates);
@@ -35,11 +35,11 @@ const DaysSidebar: React.FC<DaysSidebarProps> = ({
     // Memoitized the dates list to prevent unnecessary re-renders
     // Also check if the pathname equals the date and add an active class
     const datesMemo = useMemo(() => {
-        return dates.map((date) => ({
+        return formattedDates.map((date) => ({
             ...date,
             isActive: pathname === `/day/${date.text}`,
         }));
-    }, [dates, pathname]);
+    }, [formattedDates, pathname]);
 
     if (isTablet) {
         return null;
@@ -72,11 +72,16 @@ const DaysSidebar: React.FC<DaysSidebarProps> = ({
                         type="always"
                     >
                         <ul className="text-sm">
-                            {datesMemo.map((date) => (
-                                <DaysSidebarItem
-                                    key={date.id}
-                                    date={date}
-                                    className={`
+                            {datesMemo.length === 0 ? (
+                                <Description className="p-2">
+                                    No available dates yet.
+                                </Description>
+                            ) : (
+                                datesMemo.map((date) => (
+                                    <DaysSidebarItem
+                                        key={date.id}
+                                        date={date}
+                                        className={`
                                         text-white font-medium p-2 rounded-md mr-2 my-1
                                         hover:bg-accent hover:text-muted-foreground hover:cursor-pointer hover:pl-4
                                         transition-all
@@ -85,8 +90,9 @@ const DaysSidebar: React.FC<DaysSidebarProps> = ({
                                                 ? "bg-accent text-primary hover:text-primary pl-4"
                                                 : ""
                                         }`}
-                                />
-                            ))}
+                                    />
+                                ))
+                            )}
                         </ul>
                     </ScrollArea>
                 </nav>

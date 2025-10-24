@@ -2,10 +2,12 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/data-table";
-import { BentoContainer } from "../bento-container";
-import { Description, SubTitle } from "../texts";
+import {
+    BentoContainer,
+    BentoContainerHeader,
+} from "../reusables/bento-container";
+import { Description, SubTitle } from "../reusables/texts";
 import React from "react";
-import ShareButton from "./share-button";
 import { formatDateForRender, formatTimeForRender } from "@/lib/utils";
 
 export interface Columns {
@@ -51,7 +53,6 @@ interface AttendanceTableProps {
     tableClassName?: string;
     date: string;
     data: Columns[];
-    withShareButton?: boolean;
 }
 
 const AttendanceTable: React.FC<AttendanceTableProps> = ({
@@ -59,13 +60,12 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({
     tableClassName,
     date,
     data,
-    withShareButton,
 }) => {
     return (
         <BentoContainer
             className={`${className} flex flex-col h-full overflow-hidden bg-background`}
         >
-            <header className="border-b pb-2 shrink-0">
+            <BentoContainerHeader>
                 <SubTitle>
                     {" "}
                     Record for day: {formatDateForRender(date)}{" "}
@@ -74,16 +74,14 @@ const AttendanceTable: React.FC<AttendanceTableProps> = ({
                     {" "}
                     List of all the checkins and outs for the selected day{" "}
                 </Description>
-            </header>
+            </BentoContainerHeader>
 
             <DataTable
                 className="flex-1 min-h-0"
                 tableClassName={tableClassName}
                 data={data}
                 columns={columns}
-            >
-                {withShareButton && <ShareButton />}
-            </DataTable>
+            />
         </BentoContainer>
     );
 };

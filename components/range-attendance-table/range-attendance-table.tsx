@@ -6,15 +6,17 @@ import {
     formatDateForRender,
     groupDateRangeByDay,
 } from "@/lib/utils";
-import Loader from "@/components/loader";
-import NoDataMessage from "../no-data-message";
 import AttendanceTable from "../attendance-table/attendance-table";
-import { ScrollArea } from "../ui/scroll-area";
-import { BentoContainer, BentoContainerHeader } from "../bento-container";
+import {
+    BentoContainer,
+    BentoContainerHeader,
+} from "../reusables/bento-container";
 import { AttendanceRecord, AttendanceRecordResponse } from "@/lib/types";
-import { Description, Title } from "../texts";
-import AlertMessage from "../alert-message";
-import ShareButton from "../attendance-table/share-button";
+import { Description, Title } from "../reusables/texts";
+import AlertMessage from "../reusables/alert-message";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { twMerge } from "tailwind-merge";
+import { Skeleton } from "../ui/skeleton";
 
 interface RangeAttendanceTableProps {
     startDate: string;
@@ -35,7 +37,7 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
 
         const fetchData = async () => {
             setLoading(true);
-            const route = `${process.env.NEXT_PUBLIC_BASE_URL}/api/reports/range?start=${startDate}&end=${endDate}`;
+            const route = `/api/reports/range?start=${startDate}&end=${endDate}`;
             const res = await fetchJSON<AttendanceRecordResponse>(route);
 
             if (isMounted) {
@@ -52,18 +54,34 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
 
     if (loading) {
         return (
-            <div className="w-full h-full flex items-center justify-center bg-background">
-                <Loader
-                    className="w-full bg-background h-full"
-                    mainText="Loading record data..."
-                    subText="Please wait while we fetch the records"
-                />
-            </div>
+            <BentoContainer
+                className={twMerge(
+                    `border-none bg-background space-y-8 w-full h-full overflow-y-auto`,
+                    className
+                )}
+            >
+                <BentoContainerHeader>
+                    <Title>
+                        Attendance Records from {formatDateForRender(startDate)}{" "}
+                        to {formatDateForRender(endDate)}
+                    </Title>
+                    <Description>
+                        Click the custom button again to change the date range.
+                    </Description>
+                </BentoContainerHeader>
+                <AlertMessage title="If you do not see any records for certain dates, it may be because there were no attendance records for those dates." />
+
+                <Skeleton className="h-10 w-1/4 " />
+                <Skeleton className="h-1/2 w-full" />
+            </BentoContainer>
         );
     }
 
-    if (!data || !data.data || data.data.length === 0) {
-        return <NoDataMessage />;
+    if (!data?.success) {
+        throw new Error(
+            data?.message ||
+                "Failed to fetch attendance data for the date range."
+        );
     }
 
     const groupedDates = groupDateRangeByDay(data!.data);
@@ -83,41 +101,43 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
     );
 
     return (
-        <ScrollArea
-            className={`w-full h-full  overflow-y-auto ${className}`}
-            type="always"
+        <BentoContainer
+            className={twMerge(
+                `border-none bg-background space-y-8 w-full h-full overflow-y-auto`,
+                className
+            )}
         >
-            <BentoContainer className="border-none bg-background space-y-8">
-                <BentoContainerHeader className="flex items-center justify-between">
-                    <div>
-                        <Title>
-                            Attendance Records from{" "}
-                            {formatDateForRender(startDate)} to{" "}
-                            {formatDateForRender(endDate)}
-                        </Title>
-                        <Description>
-                            Click the custom button again to change the date
-                            range.
-                        </Description>
-                    </div>
-                    <ShareButton fromRange={true}>Share Record Range</ShareButton>
-                </BentoContainerHeader>
+            <BentoContainerHeader>
+                <Title>
+                    Attendance Records from {formatDateForRender(startDate)} to{" "}
+                    {formatDateForRender(endDate)}
+                </Title>
+                <Description>
+                    Click the custom button again to change the date range.
+                </Description>
+            </BentoContainerHeader>
 
-                <AlertMessage title="If you do not see any records for certain dates, it may be because there were no attendance records for those dates." />
+            <AlertMessage title="If you do not see any records for certain dates, it may be because there were no attendance records for those dates." />
 
+            <Tabs defaultValue={Object.keys(formattedDates)[0]}>
+                <TabsList className="mb-4 overflow-x-auto">
+                    {Object.keys(formattedDates).map((date) => (
+                        <TabsTrigger
+                            key={date}
+                            value={date}
+                            className="whitespace-nowrap"
+                        >
+                            {formatDateForRender(date)}
+                        </TabsTrigger>
+                    ))}
+                </TabsList>
                 {Object.entries(formattedDates).map(([date, records]) => (
-                    <div key={date} className="mb-8">
-                        <AttendanceTable
-                            date={date}
-                            data={records}
-                            className={className}
-                            tableClassName="h-fit"
-                            withShareButton={false}
-                        />
-                    </div>
+                    <TabsContent key={date} value={date}>
+                        <AttendanceTable date={date} data={records} />
+                    </TabsContent>
                 ))}
-            </BentoContainer>
-        </ScrollArea>
+            </Tabs>
+        </BentoContainer>
     );
 };
 

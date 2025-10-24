@@ -1,9 +1,8 @@
 import { DateResponse } from "@/lib/types";
-import { BentoContainer } from "../bento-container";
-import { SubTitle, Description } from "../texts";
+import { BentoContainer } from "../reusables/bento-container";
+import { SubTitle, Description } from "../reusables/texts";
 import AttendanceTable from "./attendance-table";
 import { fetchJSON } from "@/lib/utils";
-import NoDataMessage from "../no-data-message";
 
 interface AttendanceTableServerProps {
     className?: string;
@@ -18,7 +17,8 @@ const AttendanceTableServer: React.FC<AttendanceTableServerProps> = async ({
     const route = `${process.env.NEXT_PUBLIC_BASE_URL}/api/reports/date/${date}`;
     const data = await fetchJSON<DateResponse>(route);
 
-    if (!data.success) return <NoDataMessage className={className} />
+    if (!data.success)
+        throw new Error(data.message || "Failed to fetch attendance data.");
 
     const formattedData =
         data.data.data?.map((item, index) => {
@@ -37,7 +37,7 @@ const AttendanceTableServer: React.FC<AttendanceTableServerProps> = async ({
             className={className}
             date={date}
             data={formattedData}
-            />
+        />
     );
 };
 

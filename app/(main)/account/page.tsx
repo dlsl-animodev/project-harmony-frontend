@@ -1,8 +1,8 @@
 import {
     BentoContainer,
     BentoContainerHeader,
-} from "@/components/bento-container";
-import { Title, Description, SubTitle } from "@/components/texts";
+} from "@/components/reusables/bento-container";
+import { Title, Description, SubTitle } from "@/components/reusables/texts";
 import AccountField from "@/components/account/account-field";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
