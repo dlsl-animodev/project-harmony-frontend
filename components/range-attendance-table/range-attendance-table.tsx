@@ -6,7 +6,6 @@ import {
     formatDateForRender,
     groupDateRangeByDay,
 } from "@/lib/utils";
-import Loader from "@/components/reusables/loader";
 import AttendanceTable from "../attendance-table/attendance-table";
 import {
     BentoContainer,
@@ -17,6 +16,7 @@ import { Description, Title } from "../reusables/texts";
 import AlertMessage from "../reusables/alert-message";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { twMerge } from "tailwind-merge";
+import { Skeleton } from "../ui/skeleton";
 
 interface RangeAttendanceTableProps {
     startDate: string;
@@ -54,13 +54,26 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
 
     if (loading) {
         return (
-            <div className="w-full h-full flex items-center justify-center bg-background">
-                <Loader
-                    className="w-full bg-background h-full"
-                    mainText="Loading record data..."
-                    subText="Please wait while we fetch the records"
-                />
-            </div>
+            <BentoContainer
+                className={twMerge(
+                    `border-none bg-background space-y-8 w-full h-full overflow-y-auto`,
+                    className
+                )}
+            >
+                <BentoContainerHeader>
+                    <Title>
+                        Attendance Records from {formatDateForRender(startDate)}{" "}
+                        to {formatDateForRender(endDate)}
+                    </Title>
+                    <Description>
+                        Click the custom button again to change the date range.
+                    </Description>
+                </BentoContainerHeader>
+                <AlertMessage title="If you do not see any records for certain dates, it may be because there were no attendance records for those dates." />
+
+                <Skeleton className="h-10 w-1/4 " />
+                <Skeleton className="h-1/2 w-full" />
+            </BentoContainer>
         );
     }
 
