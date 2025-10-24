@@ -8,7 +8,6 @@ import {
 } from "@/lib/utils";
 import Loader from "@/components/reusables/loader";
 import AttendanceTable from "../attendance-table/attendance-table";
-import { ScrollArea } from "../ui/scroll-area";
 import {
     BentoContainer,
     BentoContainerHeader,
@@ -88,11 +87,10 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
     );
 
     return (
-        <ScrollArea
-            className={`w-full h-full  overflow-y-auto ${className}`}
-            type="always"
+        <div
+            className={`w-full h-full overflow-y-auto ${className}`}
         >
-            <BentoContainer className="border-none bg-background space-y-8">
+            <BentoContainer className="border-none bg-background space-y-8 w-full h-full">
                 <BentoContainerHeader className="flex items-center justify-between">
                     <div>
                         <Title>
@@ -134,7 +132,7 @@ const RangeAttendanceTable: React.FC<RangeAttendanceTableProps> = ({
                     ))
                 )}
             </BentoContainer>
-        </ScrollArea>
+        </div>
     );
 };
 
