@@ -30,7 +30,7 @@ const HomePage = () => {
                     </Description>
                 </BentoContainerHeader>
 
-                <AlertMessage title="If a date does not appear below, refresh the page or it meansthat there is no report for that day" />
+                <AlertMessage title="If a date does not appear below, refresh the page or it means that there is no report for that day" />
 
                 {Object.entries(groupedDates).map(([monthYear, days]) => (
                     <DayCardsContainer key={monthYear} title={monthYear}>
