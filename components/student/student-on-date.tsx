@@ -28,10 +28,7 @@ interface StudentOnDateProps {
     studentId: string;
     date: string;
 }
-const StudentOnDate: React.FC<StudentOnDateProps> = ({
-    studentId,
-    date,
-}) => {
+const StudentOnDate: React.FC<StudentOnDateProps> = ({ studentId, date }) => {
     const [data, setData] = useState<AttendanceRecordResponse | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -40,9 +37,7 @@ const StudentOnDate: React.FC<StudentOnDateProps> = ({
 
         const fetchData = async () => {
             setLoading(true);
-            const route =
-                process.env.NEXT_PUBLIC_BASE_URL +
-                `/api/reports/student/${studentId}?date=${date}`;
+            const route = `/api/reports/student/${studentId}?date=${date}`;
             const res = await fetchJSON<AttendanceRecordResponse>(route);
             if (isMounted) {
                 setData(res);
