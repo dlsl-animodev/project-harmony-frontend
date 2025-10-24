@@ -24,7 +24,7 @@ const DaysSidebar: React.FC<DaysSidebarProps> = ({
 }) => {
     const isTablet = useIsTablet();
 
-    const { dates, setDates } = useDates();
+    const { setDates } = useDates();
 
     useEffect(() => {
         setDates(formattedDates);
@@ -35,11 +35,11 @@ const DaysSidebar: React.FC<DaysSidebarProps> = ({
     // Memoitized the dates list to prevent unnecessary re-renders
     // Also check if the pathname equals the date and add an active class
     const datesMemo = useMemo(() => {
-        return dates.map((date) => ({
+        return formattedDates.map((date) => ({
             ...date,
             isActive: pathname === `/day/${date.text}`,
         }));
-    }, [dates, pathname]);
+    }, [formattedDates, pathname]);
 
     if (isTablet) {
         return null;
