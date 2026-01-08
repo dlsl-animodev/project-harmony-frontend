@@ -34,7 +34,7 @@ const Header = () => {
         <header
             className="
                 shrink-0 sticky top-0 overflow-hidden
-                h-12 shadow-md border-b z-50
+                h-12 z-50
                 flex items-center justify-between 
                 px-[1rem] lg:px-[2rem] rounded-lg
                 text-primary bg-[#c9d1ff]
