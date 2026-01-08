@@ -46,7 +46,7 @@ const CustomShortcut: React.FC<CustomShortcutProps> = ({
                     <div className={className}>{children}</div>
                 ) : (
                     <Button className={className} variant={variant}>
-                        Custom
+                        Filter
                     </Button>
                 )}
             </DropdownMenuTrigger>
