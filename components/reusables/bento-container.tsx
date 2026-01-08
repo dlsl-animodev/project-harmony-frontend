@@ -12,7 +12,7 @@ const BentoContainer: React.FC<BentoContainerProps> = ({
     return (
         <div
             className={twMerge(
-                "border-2  border-b-white border-r-white border-t-[#e2d9ff] border-l-[#e2d9ff] bg-card p-4 rounded-md ",
+                "bg-card p-4 rounded-md ",
                 className
             )}
         >
