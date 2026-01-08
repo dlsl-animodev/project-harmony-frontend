@@ -37,18 +37,9 @@ const Header = () => {
                 h-12 shadow-md border-b z-50
                 flex items-center justify-between 
                 px-[1rem] lg:px-[2rem] rounded-lg
-                text-primary
-                bg-gradient-to-b from-[#c9d1ff] via-[#e1b8ff] to-[#fcb5f8]
+                text-primary bg-[#c9d1ff]
             "
         >
-            {/* Light overlay for soft depth */}
-            <div className="absolute inset-0 bg-gradient-to-tl from-white/40 to-transparent rounded-b-lg pointer-events-none z-0"></div>
-
-            {/* Animated light beam (between bg and text) */}
-            <div className="absolute inset-0 overflow-hidden rounded-b-lg pointer-events-none z-10">
-                <div className="animate-shine absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent w-[200%]"></div>
-            </div>
-
             {renderHeader()}
         </header>
     );
