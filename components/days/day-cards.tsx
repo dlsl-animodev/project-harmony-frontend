@@ -1,6 +1,6 @@
 import { BentoContainer } from "../reusables/bento-container";
 import { SubTitle, Description, SubHeading } from "../reusables/texts";
-import { ChevronRight, Sheet } from "lucide-react";
+import { Sheet } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { formatDateForRender } from "@/lib/utils";
@@ -31,7 +31,7 @@ interface DayCardsProps {
 
 const DayCards: React.FC<DayCardsProps> = ({ children }) => {
     return (
-        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
+        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {children}
         </ul>
     );
@@ -43,13 +43,9 @@ interface DayCardItemProps {
 const DayCardItem: React.FC<DayCardItemProps> = ({ item }) => {
     return (
         <li>
-            <BentoContainer className="space-y-6 sm:space-y-12 px-6 bg-gradient-to-tl from-[#f9f5ff] via-[#f0e7ff] to-[#e2d9ff] shadow-md transition h-full hover:border-2 hover:border-purple-200 flex flex-col justify-between">
+            <BentoContainer className="space-y-6 sm:space-y-12 px-6 bg-gradient-to-tl from-[#f9f5ff] via-[#f0e7ff] to-[#e2d9ff] shadow-sm h-full flex flex-col justify-between">
                 <header>
-                    <div className="flex items-center justify-between">
-                        <SubTitle>{formatDateForRender(item.text)}</SubTitle>
-
-                        <ChevronRight className="text-[#f93ed4]" />
-                    </div>
+                    <SubTitle>{formatDateForRender(item.text)}</SubTitle>
                     <Description>
                         {item.text === new Date().toLocaleDateString("en-CA") &&
                             "Today"}
@@ -63,11 +59,8 @@ const DayCardItem: React.FC<DayCardItemProps> = ({ item }) => {
                 </header>
 
                 <Link href={`/day/${item.text}`} className="w-full">
-                    <Button
-                        variant="ghost"
-                        className="text-xs w-full"
-                    >
-                        <Sheet /> View
+                    <Button variant={'secondary'} className="text-xs w-full">
+                         <Sheet /> View
                     </Button>
                 </Link>
             </BentoContainer>
