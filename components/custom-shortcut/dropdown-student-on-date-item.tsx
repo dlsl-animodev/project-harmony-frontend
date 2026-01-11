@@ -39,7 +39,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-
 const formSchema = z.object({
     studentId: z.string().min(1, "Student ID is required"),
     date: z.date({ error: "Date is required" }),
@@ -50,6 +49,7 @@ const DropdownStudentOnDateItem: React.FC<DropdownCustomItemProps> = ({
     setSidebarOpen,
 }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [popoverOpen, setPopoverOpen] = useState(false);
 
     const router = useRouter();
 
@@ -122,7 +122,10 @@ const DropdownStudentOnDateItem: React.FC<DropdownCustomItemProps> = ({
                             render={({ field }) => (
                                 <FormItem className="flex flex-col">
                                     <FormLabel>Date</FormLabel>
-                                    <Popover>
+                                    <Popover
+                                        open={popoverOpen}
+                                        onOpenChange={setPopoverOpen}
+                                    >
                                         <PopoverTrigger asChild>
                                             <FormControl>
                                                 <Button
@@ -151,6 +154,9 @@ const DropdownStudentOnDateItem: React.FC<DropdownCustomItemProps> = ({
                                             <Calendar
                                                 mode="single"
                                                 selected={field.value}
+                                                onDayClick={() =>
+                                                    setPopoverOpen(false)
+                                                }
                                                 onSelect={field.onChange}
                                                 disabled={(date) =>
                                                     date > new Date() ||
