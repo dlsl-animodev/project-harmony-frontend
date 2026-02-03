@@ -4,10 +4,16 @@ import { twMerge } from "tailwind-merge";
 interface BentoContainerProps {
     children: React.ReactNode;
     className?: string;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
+    onClick? : () => void;
 }
 const BentoContainer: React.FC<BentoContainerProps> = ({
     children,
     className,
+    onMouseEnter,
+    onMouseLeave,
+    onClick
 }) => {
     return (
         <div
@@ -15,6 +21,9 @@ const BentoContainer: React.FC<BentoContainerProps> = ({
                 "bg-card p-4 rounded-md ",
                 className
             )}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            onClick={onClick}
         >
             {children}
         </div>

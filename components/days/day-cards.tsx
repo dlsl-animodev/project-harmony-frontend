@@ -61,6 +61,7 @@ const DayCardItem: React.FC<DayCardItemProps> = ({ item }) => {
                 <Link href={`/day/${item.text}`} className="w-full">
                     <Button variant={'secondary'} className="text-xs w-full whitespace-normal">
                          <Sheet /> View Attendance
+                         
                     </Button>
                 </Link>
             </BentoContainer>

@@ -83,6 +83,18 @@ export function formatDatesWithIndexAsId(dates: string[] = []): DateType[] {
     }));
 }
 
+// Get all the months in words format (e.g. January) in a today's year 
+export function getAllMonthsInYear(): DateType[] {
+    const months: DateType[] = [];
+    const year = new Date().getFullYear();
+    for (let month = 0; month < 12; month++) {
+        const date = new Date(year, month, 1);
+        const monthStr = date.toLocaleDateString("en-US", { month: "long" });
+        months.push({ id: month + 1, text: monthStr });
+    }
+    return months;
+}
+
 export async function fetchJSON<T>(
     url: string,
     options?: RequestInit
