@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { formatDateAsYYYYMMDD } from "@/lib/utils";
 import { useSidebarOpen } from "@/context/sidebar-open-context";
 import CustomShortcut from "./custom-shortcut/custom-shortcut";
+import ChooseDayPicker from "./days/choose-day-picker";
 
 const Header = () => {
     const isTablet = useIsTablet();
@@ -50,14 +51,19 @@ export default Header;
 const DesktopHeaderContent = () => {
     return (
         <>
-            <section className="relative z-20 flex items-center gap-14">
+            <section className="relative z-20 flex items-center gap-16">
                 <Link href="/" className="font-bold text-lg">
                     Project Harmony
                 </Link>
                 <nav>
-                    <ul className="font-medium text-sm flex items-center gap-6">
-                        <li>
-                            <Link href="/home">Home</Link>
+                    <ul className="font-medium text-sm flex items-center gap-4">
+                        <li className="hover:opacity-70">
+                            <Link href="/home">
+                                <Button className="bg-[#c9d1ff] text-primary hover:bg-[#c9d1ff] active:bg-[#c9d1ff]">Home</Button>
+                            </Link>
+                        </li>
+                        <li className="hover:opacity-70">
+                            <ChooseDayPicker className="bg-[#c9d1ff] text-primary hover:bg-[#c9d1ff] active:bg-[#c9d1ff]" />
                         </li>
                     </ul>
                 </nav>
@@ -91,7 +97,7 @@ const MobileHeaderContent = () => {
                 icon: <User size={ICON_SIZE} />,
             },
         ],
-        []
+        [],
     );
 
     const router = useRouter();

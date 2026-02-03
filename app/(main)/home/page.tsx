@@ -20,8 +20,8 @@ const HomePage = () => {
     const { dates } = useDates();
     const groupedDates = dates ? groupDatesByMonth(dates) : {};
 
-    const isLoading = dates === null; 
-    const isEmpty = dates && dates.length === 0; 
+    const isLoading = dates === null;
+    const isEmpty = dates && dates.length === 0;
 
     return (
         <ScrollArea className="flex-1 overflow-auto" type="always">
@@ -46,7 +46,7 @@ const HomePage = () => {
                                                 key={dayIndex}
                                                 className="h-32 w-full rounded-md"
                                             />
-                                        )
+                                        ),
                                     )}
                                 </div>
                             </div>
@@ -73,6 +73,5 @@ const HomePage = () => {
         </ScrollArea>
     );
 };
-
 
 export default HomePage;
