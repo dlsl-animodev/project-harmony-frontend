@@ -170,7 +170,7 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({ monthName, year }) => {
                                     {available && (
                                         <Badge
                                             variant={"outline"}
-                                            className="text-xs font-medium border-neutral-300 text-muted-foreground"
+                                            className="hidden sm:block text-xs font-medium border-neutral-300 text-muted-foreground"
                                         >
                                             Record Exist
                                         </Badge>
@@ -186,7 +186,7 @@ const MonthCalendar: React.FC<MonthCalendarProps> = ({ monthName, year }) => {
                             {available && (
                                 <Link
                                     href={`/day/${dateText}`}
-                                    className="w-full mt-auto"
+                                    className="w-full mt-auto hidden sm:block"
                                 >
                                     <Button
                                         variant="secondary"
