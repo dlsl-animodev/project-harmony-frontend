@@ -15,7 +15,7 @@ import AnimoDevBadge from "@/components/reusables/animo-dev-badge";
 const TestLandingPage = () => {
     return (
         <div className="h-dvh w-dvw">
-            <header className="flex items-center justify-between px-8 h-[8rem]">
+            <header className="flex items-center justify-between px-8 h-[8rem] mb-[2rem] md:mb-[0rem]">
                 {/* Left Side  */}
                 <section className="flex gap-4 items-center">
                     <Image
@@ -23,9 +23,9 @@ const TestLandingPage = () => {
                         alt="animo-dev-logo"
                         width={1024}
                         height={768}
-                        className="w-[2rem] h-[2rem] md:w-[3rem] md:h-[3rem] lg:w-[4rem] lg:h-[4rem] rounded-lg border shadow-md"
+                        className="w-[3rem] h-[3rem] lg:w-[4rem] lg:h-[4rem] rounded-lg border shadow-md"
                     />
-                    <div className="w-[2rem] h-[2rem] md:w-[3rem] md:h-[3rem] lg:w-[4rem] lg:h-[4rem] rounded-lg border shadow-md flex items-center text-sm text-center font-semibold">
+                    <div className="w-[3rem] h-[3rem] lg:w-[4rem] lg:h-[4rem] rounded-lg border shadow-md flex items-center text-sm text-center font-semibold">
                         {" "}
                         musikalista logo{" "}
                     </div>
@@ -37,25 +37,27 @@ const TestLandingPage = () => {
                             Sign in
                         </Button>
                     </Link>
-                    <AboutAndLegals />
+                    {/* <AboutAndLegals /> */}
                 </section>
             </header>
-            <main className="flex flex-col gap-6 items-center h-[calc(100dvh-16rem)] justify-center">
+            <main className="flex flex-col gap-6 items-center h-[calc(100dvh-16rem)] justify-center p-2">
                 <div className="flex flex-col gap-4 items-center ">
-                    <AnimoDevBadge className="w-fit" />
-                    <Title className="text-5xl sm:text-6xl lg:text-7xl mb-4 font-bold break-words text-center">
-                        Never Lose Track of a Beat, <br /> or Who is in the
-                        Room.
-                    </Title>
-                    <Description className="text-sm  md:text-xl lg:text-2xl font-medium text-center">
-                        The official website for the Iot-powered Musikalista
-                        Room Tracker that monitors check-ins and check-outs.
-                    </Description>
+                    <AnimoDevBadge />
+                    <div>
+                        <Title className="mt-[1rem] md:mt-[0rem] text-4xl sm:text-6xl lg:text-7xl mb-4 font-bold break-words text-center">
+                            Never Lose Track of a Beat, <br className="hidden md:block" /> or Who is in the
+                            Room.
+                        </Title>
+                        <Description className="text-sm  md:text-xl lg:text-2xl font-medium text-center">
+                            The official website for the Iot-powered Musikalista
+                            Room Tracker that monitors check-ins and check-outs.
+                        </Description>
+                    </div>
                 </div>
-                <Description className="text-xs md:text-sm lg:text-base text-center">
+                <Description className="text-xs md:text-sm lg:text-base text-center mx-auto max-w-5xl">
                     Musikalista IoT-powered Room Tracker monitors every entry
                     and exit in the Music Club Room, syncing data to this
-                    website&apos;s dashboard <br /> so club heads and members
+                    website&apos;s dashboard so club heads and members
                     always know who is practicing, when the room&apos;s
                     occupied, and who last used it, all without manual logs.
                 </Description>
@@ -70,6 +72,8 @@ const TestLandingPage = () => {
 
 export default TestLandingPage;
 
+// USE THIS WHEN DOCUMENTS ARE READY 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const AboutAndLegals = () => {
     const items = [
         { label: "About", href: "#" },

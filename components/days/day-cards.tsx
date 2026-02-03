@@ -43,9 +43,9 @@ interface DayCardItemProps {
 const DayCardItem: React.FC<DayCardItemProps> = ({ item }) => {
     return (
         <li>
-            <BentoContainer className="space-y-6 sm:space-y-12 px-6 bg-gradient-to-tl from-[#f9f5ff] via-[#f0e7ff] to-[#e2d9ff] shadow-sm h-full flex flex-col justify-between">
+            <BentoContainer className="space-y-6 sm:space-y-12 px-4 bg-gradient-to-tl from-[#f9f5ff] via-[#f0e7ff] to-[#e2d9ff] shadow-sm h-full flex flex-col justify-between">
                 <header>
-                    <SubTitle className="text-[18px]">{formatDateForRender(item.text)}</SubTitle>
+                    <SubTitle className="text-base md:text-[18px]">{formatDateForRender(item.text)}</SubTitle>
                     <Description>
                         {item.text === new Date().toLocaleDateString("en-CA") &&
                             "Today"}
@@ -59,7 +59,7 @@ const DayCardItem: React.FC<DayCardItemProps> = ({ item }) => {
                 </header>
 
                 <Link href={`/day/${item.text}`} className="w-full">
-                    <Button variant={'secondary'} className="text-xs w-full">
+                    <Button variant={'secondary'} className="text-xs w-full whitespace-normal">
                          <Sheet /> View Attendance
                     </Button>
                 </Link>

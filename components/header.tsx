@@ -36,7 +36,7 @@ const Header = () => {
                 shrink-0 sticky top-0 overflow-hidden
                 h-14 z-50
                 flex items-center justify-between 
-                px-[1rem] lg:px-[2rem] rounded-lg
+                px-[1rem] lg:px-[2rem] rounded-b-lg
                 text-primary bg-[#c9d1ff]
             "
         >

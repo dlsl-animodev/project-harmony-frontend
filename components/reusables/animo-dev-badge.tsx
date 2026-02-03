@@ -7,22 +7,29 @@ interface AnimoDevBadgeProps {
     className?: string;
 }
 
-const AnimoDevBadge: React.FC<AnimoDevBadgeProps> = ({
-    className,
-}) => {
+const AnimoDevBadge: React.FC<AnimoDevBadgeProps> = ({ className }) => {
     return (
-        <div className={twMerge(`text-white flex items-center rounded-lg text-sm text-center gap-4 px-4 py-2 shadow-md bg-gradient-to-r from-yellow-500 via-purple-500 to-pink-500 font-bold border`, className)}>
-            <Disc3 className=" animate-spin size-8 md:size-5" />{" "}
+        <div
+            className={twMerge(
+                `text-white flex items-center w-fit rounded-lg text-xs text-center gap-4 px-4 py-2 shadow-md bg-gradient-to-r from-yellow-500 via-purple-500 to-pink-500 font-bold border`,
+                className,
+            )}
+        >
+            <SpinningDisk />
             <span>
-                Developed and maintained by
+                Developed by
                 <Link href={"#"} className="underline">
                     {" "}
                     ANIMO.DEV
                 </Link>{" "}
             </span>
-            <Disc3 className=" animate-spin size-8 md:size-5" />{" "}
+            <SpinningDisk />
         </div>
     );
 };
 
 export default AnimoDevBadge;
+
+const SpinningDisk = () => {
+    return <Disc3 className=" animate-spin " />;
+};
